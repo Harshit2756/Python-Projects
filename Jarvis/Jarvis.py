@@ -4,26 +4,32 @@ import speech_recognition as sr  # pip install speechRecognition == speach data 
 
 engine = pyttsx3.init()
 
+# ********************* Speak Function ***********************
 def speak(audio):
     engine.say(audio)
     engine.runAndWait()
 
+# ********************* Vocie Change Function ***********************
 def getvoice(voice):
     voices = engine.getProperty('voices')
     # print(voices[1].id)
     if voice == 1:
         engine.setProperty('voice', voices[0].id)
+        speak("Hello sir to select my voice press 1")
     if voice == 2:
         engine.setProperty('voice', voices[1].id)
+        speak("Hello sir to select my voice press 2")
+
 
     speak("this is jarvis sir")
 
+# ********************* Time Function ***********************
 def time():
     Time = datetime.datetime.now().strftime("%I:%M:%S")
     speak("THe current time is")
     speak(Time)
 
-
+# ********************* Date Function ***********************
 def date():
     year = int(datetime.datetime.now().year)
     month = int(datetime.datetime.now().month)
@@ -33,6 +39,7 @@ def date():
     speak(month)
     speak(year)
 
+# ********************* Greeting Function ***********************
 def greeting():
     hour = datetime.datetime.now().hour
     if hour >= 6 and hour < 12:
@@ -44,15 +51,18 @@ def greeting():
     else:
         speak("Good Night")
 
+# ********************* Wishme Function ***********************
 def wishme():
     speak("Welcome back sir!")
     greeting()
     speak("Jarvis at your service. Please tell me how can i help you?")
 
+# ************ Take Command Through CMD Function *************
 def takeCommandCMD():
     query = input("Command: ")
     return query
 
+# ************ Take Command Through Mic Function *************
 def takeCommandMic():
     r = sr.Recognizer()
     with sr.Microphone() as source:
@@ -62,7 +72,7 @@ def takeCommandMic():
 
     try:
         print("Recognizing...")
-        query = r.recognize_google(audio, language='Hi-IN')
+        query = r.recognize_google(audio, language='en-IN')
         print(query)
 
     except Exception as e:
@@ -72,7 +82,13 @@ def takeCommandMic():
         return "None"
     return query
 
+def quit():
+    speak("Thanks for using me sir, have a good day.")
+    exit()
+
+# ********************* Main Function ***********************
 if __name__ == "__main__":
+    getvoice(1)
     wishme()
 
     while True:
@@ -83,4 +99,8 @@ if __name__ == "__main__":
 
         elif 'date' in query:
             date()
+
+        elif 'Exit' in query:
+            quit()
+            
 
