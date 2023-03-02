@@ -1,0 +1,1 @@
+from secrets import sender_email, sender_password, To # pip install python-dotenv == hide email and password

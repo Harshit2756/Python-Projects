@@ -1,7 +1,15 @@
 import pyttsx3  # pip install pyttsx3  == text data into speach
-import datetime 
+import datetime # pip install datetime == get date and time
 import speech_recognition as sr  # pip install speechRecognition == speach data into text
+import smtplib # pip install secure-smtplib == send email
+import wikipedia # pip install wikipedia == search wikipedia
+import webbrowser # pip install webbrowser == open browser
+import os # pip install os == open file
+# import pyautogui # pip install pyautogui == take screenshot
+# import psutil # pip install psutil == get battery percentage
+# import pyjokes # pip install pyjokes == get jokes
 
+# from secrets import sender_email, sender_password, To # pip install python-dotenv == hide email and password
 engine = pyttsx3.init()
 
 # ********************* Speak Function ***********************
@@ -10,7 +18,7 @@ def speak(audio):
     engine.runAndWait()
 
 # ********************* Vocie Change Function ***********************
-def getvoice(voice):
+def getvoices(voice):
     voices = engine.getProperty('voices')
     # print(voices[1].id)
     if voice == 1:
@@ -19,9 +27,6 @@ def getvoice(voice):
     if voice == 2:
         engine.setProperty('voice', voices[1].id)
         speak("Hello sir to select my voice press 2")
-
-
-    speak("this is jarvis sir")
 
 # ********************* Time Function ***********************
 def time():
@@ -67,13 +72,13 @@ def takeCommandMic():
     r = sr.Recognizer()
     with sr.Microphone() as source:
         print("Listening...")
-        r.pause_threshold = 1
+        r.pause_threshold = 1 # 1 second pause to indicate end of speaking
         audio = r.listen(source)
 
     try:
         print("Recognizing...")
         query = r.recognize_google(audio, language='en-IN')
-        print(query)
+        print(f"User Said: {query}\n")
 
     except Exception as e:
         print(e)
@@ -86,21 +91,98 @@ def quit():
     speak("Thanks for using me sir, have a good day.")
     exit()
 
+def sendEmail(to, content):
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(sender_email, sender_password)
+    server.sendmail(sender_email, to, content)
+    server.close()
+
+
 # ********************* Main Function ***********************
 if __name__ == "__main__":
-    getvoice(1)
+    getvoices(1)
     wishme()
-
+    #  Logic for executing tasks based on query
     while True:
-        query = takeCommandMic().lower()
+        query = takeCommandMic().lower() # convert query into lower case so we don't get error in if condition when we say "Open Youtube" instead of "open youtube" or "OPEN YOUTUBE" etc.
         
         if 'time' in query:
             time()
 
         elif 'date' in query:
             date()
+        
+        elif 'wikipedia' in query:
+            speak("Searching Wikipedia...")
+            query = query.replace("wikipedia", "")  # replace wikipedia with nothing in the query string so we don't get error in wikipedia search process when searching for something like "wikipedia time"
+            results = wikipedia.summary(query, sentences=2) # Wikipedia will give the summary in 2 sentences of the query  # pip install wikipedia
+            speak("According to Wikipedia")
+            print(results)
+            speak(results)
 
-        elif 'Exit' in query:
+        elif 'open youtube' in query:
+            speak("Opening Youtube...")
+            webbrowser.open("youtube.com")
+
+        elif 'open google' in query:
+            speak("Opening Google...")
+            webbrowser.open("google.com")
+        
+        elif 'open stackoverflow' in query:
+            speak("Opening Stackoverflow...")
+            webbrowser.open("stackoverflow.com")
+        
+        elif 'open github' in query:
+            speak("Opening Github...")
+            webbrowser.open("github.com")
+
+        elif 'open facebook' in query:
+            speak("Opening Facebook...")
+            webbrowser.open("facebook.com")
+        
+        elif 'open instagram' in query:
+            speak("Opening Instagram")
+            webbrowser.open("instagram.com")
+
+        elif 'Classroom' in query:
+            speak("opening Classroom")
+            webbrowser.open("classroom.google.com")
+
+        elif 'play music' in query:
+            music_dir = 'D:\Songs\Hanuman ji'
+            songs = os.listdir(music_dir)
+            os.startfile(os.path.join(music_dir, songs[0]))
+
+        elif 'Python workspace' in query:
+            VsCodePath = "C:\Users\khand\OneDrive\Desktop\Python-Copy.code-workspace"
+        elif 'remember that' in query:
+            speak("What should i remember?")
+            data = takeCommandMic()
+            speak("You said me to remember that" + data)
+            remember = open('data.txt', 'w')
+            remember.write(data)
+            remember.close()
+
+        elif 'volume' in query:
+            speak("Sir, please tell me the volume level you want to set")
+            volume = takeCommandMic()
+            engine.setProperty('volume', volume)
+            speak(f"Sir, I have set the volume to {volume}")
+
+        elif 'send email' in query:
+            try:
+                speak("What should i say?")
+                content = takeCommandMic()
+                to = To
+                sendEmail(to, content)
+                speak("Email has been sent!")
+            except Exception as e:
+                print(e)
+                speak("Unable to send the email")
+        
+
+        elif 'exit' in query:
             quit()
             
 
