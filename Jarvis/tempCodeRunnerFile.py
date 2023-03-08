@@ -1,1 +1,2 @@
-from secrets import sender_email, sender_password, To # pip install python-dotenv == hide email and password
+        # elif 'Python workspace' in query:
+        #     VsCodePath = "C:\Users\khand\OneDrive\Desktop\Python-Copy.code-workspace"

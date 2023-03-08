@@ -23,10 +23,10 @@ def getvoices(voice):
     # print(voices[1].id)
     if voice == 1:
         engine.setProperty('voice', voices[0].id)
-        speak("Hello sir to select my voice press 1")
+        # speak("Hello sir to select my voice press 1")
     if voice == 2:
         engine.setProperty('voice', voices[1].id)
-        speak("Hello sir to select my voice press 2")
+        # speak("Hello sir to select my voice press 2")
 
 # ********************* Time Function ***********************
 def time():
@@ -87,10 +87,12 @@ def takeCommandMic():
         return "None"
     return query
 
+#*********************** Quit Function ***********************
 def quit():
     speak("Thanks for using me sir, have a good day.")
     exit()
 
+# ********************* Send Email Function ***********************
 def sendEmail(to, content):
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
@@ -103,16 +105,21 @@ def sendEmail(to, content):
 if __name__ == "__main__":
     getvoices(1)
     wishme()
-    #  Logic for executing tasks based on query
+
+    # ********** Logic for executing tasks based on query ***********
     while True:
+       
         query = takeCommandMic().lower() # convert query into lower case so we don't get error in if condition when we say "Open Youtube" instead of "open youtube" or "OPEN YOUTUBE" etc.
-        
+       
+        # *********** time ***********
         if 'time' in query:
             time()
 
+        # *********** date ***********
         elif 'date' in query:
             date()
         
+        # *********** wikipedia ***********
         elif 'wikipedia' in query:
             speak("Searching Wikipedia...")
             query = query.replace("wikipedia", "")  # replace wikipedia with nothing in the query string so we don't get error in wikipedia search process when searching for something like "wikipedia time"
@@ -121,41 +128,53 @@ if __name__ == "__main__":
             print(results)
             speak(results)
 
+        # *********** Open Youtube ***********
         elif 'open youtube' in query:
             speak("Opening Youtube...")
             webbrowser.open("youtube.com")
 
+        # *********** Open Google ***********
         elif 'open google' in query:
             speak("Opening Google...")
             webbrowser.open("google.com")
         
+        # *********** Open Stackoverflow ***********
         elif 'open stackoverflow' in query:
             speak("Opening Stackoverflow...")
             webbrowser.open("stackoverflow.com")
         
+        # *********** Open Github ***********
         elif 'open github' in query:
             speak("Opening Github...")
             webbrowser.open("github.com")
 
+        # *********** Open Facebook ***********
         elif 'open facebook' in query:
             speak("Opening Facebook...")
             webbrowser.open("facebook.com")
         
+        # *********** Open Instagram ***********
         elif 'open instagram' in query:
             speak("Opening Instagram")
             webbrowser.open("instagram.com")
 
+        # *********** Open Classroom ***********
         elif 'Classroom' in query:
             speak("opening Classroom")
             webbrowser.open("classroom.google.com")
 
+        # *********** Play music ***********
         elif 'play music' in query:
             music_dir = 'D:\Songs\Hanuman ji'
             songs = os.listdir(music_dir)
             os.startfile(os.path.join(music_dir, songs[0]))
 
+        # *********** Open vs code workspace ***********
         elif 'Python workspace' in query:
-            VsCodePath = "C:\Users\khand\OneDrive\Desktop\Python-Copy.code-workspace"
+            VsCodePath = "C:\\Users\\khand\\OneDrive\\Desktop\\Python-Copy.code-workspace"
+            os.startfile(VsCodePath)
+
+        # *********** Remember ***********
         elif 'remember that' in query:
             speak("What should i remember?")
             data = takeCommandMic()
@@ -164,12 +183,14 @@ if __name__ == "__main__":
             remember.write(data)
             remember.close()
 
+        # *********** Volume ***********
         elif 'volume' in query:
             speak("Sir, please tell me the volume level you want to set")
             volume = takeCommandMic()
             engine.setProperty('volume', volume)
             speak(f"Sir, I have set the volume to {volume}")
 
+        # *********** Send Email ***********
         elif 'send email' in query:
             try:
                 speak("What should i say?")
@@ -182,6 +203,7 @@ if __name__ == "__main__":
                 speak("Unable to send the email")
         
 
+        # *********** Exit ***********
         elif 'exit' in query:
             quit()
             
