@@ -5,8 +5,9 @@ import smtplib # pip install secure-smtplib == send email
 from email.message import EmailMessage # pip install email == send email with attachment
 import wikipedia # pip install wikipedia == search wikipedia
 import webbrowser # pip install webbrowser == open browser
+from time import sleep # pip install time == sleep function to wait for some time
 import os # pip install os == open file
-# import pyautogui # pip install pyautogui == take screenshot
+import pyautogui # pip install pyautogui == take screenshot
 # import psutil # pip install psutil == get battery percentage
 # import pyjokes # pip install pyjokes == get jokes
 
@@ -107,6 +108,17 @@ def sendEmail(To, Subject , content):
     server.send_message(Email)
     server.close()
 
+# ********************* Send Whatsapp Message Function ***********************
+def sendwhatsappmsg(phone_no, message):
+    Message = message
+    webbrowser.open("https://web.whatsapp.com/send?phone=+91" + phone_no + "&text=" + Message)
+    sleep(10)
+    pyautogui.press('enter')
+
+# ********************* Take Screenshot Function ***********************
+# def screenshot():
+#     img = pyautogui.screenshot()
+#     img.save("C:\\Users\\Harsh\\Desktop\\Jarvis\\screenshot.png")
 
 # ********************* Main Function ***********************
 if __name__ == "__main__":
@@ -138,37 +150,37 @@ if __name__ == "__main__":
         # *********** Open Youtube ***********
         elif 'open youtube' in query:
             speak("Opening Youtube...")
-            webbrowser.open("youtube.com")
+            webbrowser.get('windows-default').open("youtube.com")
 
         # *********** Open Google ***********
         elif 'open google' in query:
             speak("Opening Google...")
-            webbrowser.open("google.com")
+            webbrowser.get('windows-default').open("google.com")
         
         # *********** Open Stackoverflow ***********
         elif 'open stackoverflow' in query:
             speak("Opening Stackoverflow...")
-            webbrowser.open("stackoverflow.com")
+            webbrowser.get('windows-default').open("stackoverflow.com")
         
         # *********** Open Github ***********
         elif 'open github' in query:
             speak("Opening Github...")
-            webbrowser.open("github.com")
+            webbrowser.get('windows-default').open("github.com")
 
         # *********** Open Facebook ***********
         elif 'open facebook' in query:
             speak("Opening Facebook...")
-            webbrowser.open("facebook.com")
+            webbrowser.get('windows-default').open("facebook.com")
         
         # *********** Open Instagram ***********
         elif 'open instagram' in query:
             speak("Opening Instagram")
-            webbrowser.open("instagram.com")
+            webbrowser.get('windows-default').open("instagram.com")
 
         # *********** Open Classroom ***********
         elif 'Classroom' in query:
             speak("opening Classroom")
-            webbrowser.open("classroom.google.com")
+            webbrowser.get('windows-default').open("classroom.google.com")
 
         # *********** Play music ***********
         elif 'play music' in query:
@@ -209,13 +221,35 @@ if __name__ == "__main__":
 
                 speak("What should i say?")
                 content = takeCommandMic()
-                
+
                 sendEmail(To, Subject, content)
                 speak("Email has been sent!")
             except Exception as e:
                 print(e)
                 speak("Unable to send the email")
         
+        # *********** Send Whatsapp Message ***********
+        elif 'send whatsapp message' in query:
+            user_name = {'test_name':'+91878855641'}
+            try:
+                speak("To whom you want to send whatsapp message?")
+                phone_no = user_name[takeCommandMic()]
+
+                speak("What should i say?")
+                message = takeCommandMic()
+
+                sendwhatsappmsg(phone_no, message)
+                speak("Message has been sent!")
+
+            except Exception as e:
+                print(e)
+                speak("Unable to send the message")
+
+        # # *********** Take Screenshot ***********
+        # elif 'screenshot' in query:
+        #     speak("Taking screenshot...")
+        #     screenshot()
+        #     speak("Screenshot has been taken!")
 
         # *********** Exit ***********
         elif 'exit' in query:
