@@ -1,7 +1,8 @@
-import pyttsx3  # pip install pyttsx3  == text data into speach
+import pyttsx3  # pip install pyttsx3  == text data into speech
 import datetime # pip install datetime == get date and time
-import speech_recognition as sr  # pip install speechRecognition == speach data into text
+import speech_recognition as sr  # pip install speechRecognition == speech data into text
 import smtplib # pip install secure-smtplib == send email
+from email.message import EmailMessage # pip install email == send email with attachment
 import wikipedia # pip install wikipedia == search wikipedia
 import webbrowser # pip install webbrowser == open browser
 import os # pip install os == open file
@@ -9,7 +10,7 @@ import os # pip install os == open file
 # import psutil # pip install psutil == get battery percentage
 # import pyjokes # pip install pyjokes == get jokes
 
-# from secrets import sender_email, sender_password, To # pip install python-dotenv == hide email and password
+from secrets import sender_email, sender_password, To # pip install python-dotenv == hide email and password
 engine = pyttsx3.init()
 
 # ********************* Speak Function ***********************
@@ -17,7 +18,7 @@ def speak(audio):
     engine.say(audio)
     engine.runAndWait()
 
-# ********************* Vocie Change Function ***********************
+# ********************* Voice Change Function ***********************
 def getvoices(voice):
     voices = engine.getProperty('voices')
     # print(voices[1].id)
@@ -93,11 +94,17 @@ def quit():
     exit()
 
 # ********************* Send Email Function ***********************
-def sendEmail(to, content):
-    server = smtplib.SMTP('smtp.gmail.com', 587)
+def sendEmail(To, Subject , content):
+    server = smtplib.SMTP('smtp.gmail.com', 587) # 587 is port number for gmail server 
+    server.ehlo()
     server.starttls()
     server.login(sender_email, sender_password)
-    server.sendmail(sender_email, to, content)
+    Email = EmailMessage()
+    Email['From'] = sender_email
+    Email['To'] = To
+    Email['Subject'] = Subject
+    Email.set_content(content)
+    server.send_message(Email)
     server.close()
 
 
@@ -108,9 +115,9 @@ if __name__ == "__main__":
 
     # ********** Logic for executing tasks based on query ***********
     while True:
-       
+        
         query = takeCommandMic().lower() # convert query into lower case so we don't get error in if condition when we say "Open Youtube" instead of "open youtube" or "OPEN YOUTUBE" etc.
-       
+        
         # *********** time ***********
         if 'time' in query:
             time()
@@ -192,11 +199,18 @@ if __name__ == "__main__":
 
         # *********** Send Email ***********
         elif 'send email' in query:
+            email_list = {'testemail':''}
             try:
+                speak("To Whom you want to send email?")
+                To = email_list[takeCommandMic()]
+
+                speak("What should be the subject of email?")
+                Subject = takeCommandMic()
+
                 speak("What should i say?")
                 content = takeCommandMic()
-                to = To
-                sendEmail(to, content)
+                
+                sendEmail(To, Subject, content)
                 speak("Email has been sent!")
             except Exception as e:
                 print(e)
