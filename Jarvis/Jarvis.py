@@ -9,6 +9,10 @@ import wikipedia  # pip install wikipedia == search wikipedia
 import webbrowser  # pip install webbrowser == open browser
 from time import sleep  # pip install time == sleep function to wait for some time
 import os  # pip install os == open file
+# pip install pywhatkit == to play video on youtube and send message on whatsapp grp
+# pip install pywhatkit == to play video on youtube and send message on whatsapp grp
+import pywhatkit
+from newsapi import NewsApiClient
 import pyautogui  # pip install pyautogui == take screenshot
 # import psutil # pip install psutil == get battery percentage
 # import pyjokes # pip install pyjokes == get jokes
@@ -123,6 +127,7 @@ def sendwhatsappmsg(phone_no, message):
     Message = message
     webbrowser.open("https://web.whatsapp.com/send?phone=+91" +
                     phone_no + "&text=" + Message)
+    #!use pywhatkit instead to send the message/images to the grp  refer :https://pypi.org/project/pywhatkit/
     sleep(10)
     pyautogui.press('enter')
 
@@ -133,13 +138,29 @@ def searchgoogle():
     search = takeCommandMic()
     webbrowser.open('https://www.google.com/search?q=' + search)
 
+
+def news():
+    newsapi = NewsApiClient(api_key='5f5422d5735d45d2a17b21db6ed5859a')
+    speak('what topic you need the news on?')
+    topic = takeCommandMic()
+    data = newsapi.get_top_headlines(q='topic',
+                                     language='en',
+                                     page_size=5)
+    
+    newsdata = data['articles']
+    for x, y in enumerate(newsdata):
+        print(f'{x},{y["description"]}')
+        speak(f'{x},{y["description"]}')
+
+    speak("that's all for now ")
+
+
 # ********************* Take Screenshot Function ***********************
 # def screenshot():
 #     img = pyautogui.screenshot()
 #     img.save("C:\\Users\\Harsh\\Desktop\\Jarvis\\screenshot.png")
 
-
-# *********************** Quit Function ***********************
+    # *********************** Quit Function ***********************
 def quit():
     speak("Thanks for using me sir, have a good day.")
     exit()
@@ -148,7 +169,7 @@ def quit():
 # ********************* Main Function ***********************
 if __name__ == "__main__":
     getvoices(1)
-    wishme()
+    # wishme()
 
     # ********** Logic for executing tasks based on query ***********
     while True:
@@ -176,13 +197,19 @@ if __name__ == "__main__":
             speak(results)
 
         # ********** google ***********
-        elif 'search' in query:
+        elif 'search google' in query:
             searchgoogle()
 
         # *********** Open Youtube ***********
         elif 'open youtube' in query:
             speak("Opening Youtube...")
             webbrowser.open("youtube.com")
+
+        # ************* youtube search ********
+        elif 'search youtube' in query:
+            speak("what should i search on youtube?")
+            topic = takeCommandMic()
+            pywhatkit.playonyt(topic)
 
         # *********** Open Google ***********
         elif 'open google' in query:
@@ -277,6 +304,10 @@ if __name__ == "__main__":
             except Exception as e:
                 print(e)
                 speak("Unable to send the message")
+
+        # *********** wheather **
+        elif 'news' in query:
+            news()
 
         # # *********** Take Screenshot ***********
         # elif 'screenshot' in query:
