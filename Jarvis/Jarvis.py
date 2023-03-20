@@ -18,6 +18,8 @@ from secrets import sender_email, sender_password, To
 engine = pyttsx3.init()
 
 # ********************* Speak Function ***********************
+
+
 def speak(audio):
     engine.say(audio)
     engine.runAndWait()
@@ -98,7 +100,7 @@ def takeCommandMic():
 
         return "None"
     return query
-    
+
 
 # ********************* Send Email Function ***********************
 def sendEmail(To, Subject, content):
@@ -119,10 +121,17 @@ def sendEmail(To, Subject, content):
 # ********************* Send Whatsapp Message Function ***********************
 def sendwhatsappmsg(phone_no, message):
     Message = message
-    webbrowser.open("https://web.whatsapp.com/send?phone=" + phone_no + "&text=" + Message)
+    webbrowser.open("https://web.whatsapp.com/send?phone=+91" +
+                    phone_no + "&text=" + Message)
     sleep(10)
     pyautogui.press('enter')
 
+
+# ********************* search google ***********************
+def searchgoogle():
+    speak('Whats should i search for?')
+    search = takeCommandMic()
+    webbrowser.open('https://www.google.com/search?q=' + search)
 
 # ********************* Take Screenshot Function ***********************
 # def screenshot():
@@ -134,6 +143,7 @@ def sendwhatsappmsg(phone_no, message):
 def quit():
     speak("Thanks for using me sir, have a good day.")
     exit()
+
 
 # ********************* Main Function ***********************
 if __name__ == "__main__":
@@ -164,6 +174,10 @@ if __name__ == "__main__":
             speak("According to Wikipedia")
             print(results)
             speak(results)
+
+        # ********** google ***********
+        elif 'search' in query:
+            searchgoogle()
 
         # *********** Open Youtube ***********
         elif 'open youtube' in query:
@@ -249,10 +263,10 @@ if __name__ == "__main__":
         elif 'whatsapp' in query:
             user_name = {
                 'Siddhi': '+91 70200 58417'
-                }
+            }
             try:
                 speak("To whom you want to send whatsapp message?")
-                phone_no = user_name[takeCommandMic()]
+                phone_no = user_name[takeCommandMic().lower()]
 
                 speak("What should i say?")
                 message = takeCommandMic()
