@@ -18,15 +18,12 @@ from secrets import sender_email, sender_password, To
 engine = pyttsx3.init()
 
 # ********************* Speak Function ***********************
-
-
 def speak(audio):
     engine.say(audio)
     engine.runAndWait()
 
+
 # ********************* Voice Change Function ***********************
-
-
 def getvoices(voice):
     voices = engine.getProperty('voices')
     # print(voices[1].id)
@@ -37,17 +34,15 @@ def getvoices(voice):
         engine.setProperty('voice', voices[1].id)
         # speak("Hello sir to select my voice press 2")
 
+
 # ********************* Time Function ***********************
-
-
 def time():
     Time = datetime.datetime.now().strftime("%I:%M:%S")
     speak("THe current time is")
     speak(Time)
 
+
 # ********************* Date Function ***********************
-
-
 def date():
     year = int(datetime.datetime.now().year)
     month = int(datetime.datetime.now().month)
@@ -57,9 +52,8 @@ def date():
     speak(month)
     speak(year)
 
+
 # ********************* Greeting Function ***********************
-
-
 def greeting():
     hour = datetime.datetime.now().hour
     if hour >= 6 and hour < 12:
@@ -71,24 +65,21 @@ def greeting():
     else:
         speak("Good Night")
 
+
 # ********************* Wishme Function ***********************
-
-
 def wishme():
     speak("Welcome back sir!")
     greeting()
     speak("Jarvis at your service. Please tell me how can i help you?")
 
-# ************ Take Command Through CMD Function *************
 
-
+# ~ ************ Take Command Through CMD Function *************
 def takeCommandCMD():
     query = input("Command: ")
     return query
 
-# ************ Take Command Through Mic Function *************
 
-
+# ~ ************ Take Command Through Mic Function *************
 def takeCommandMic():
     r = sr.Recognizer()
     with sr.Microphone() as source:
@@ -107,17 +98,9 @@ def takeCommandMic():
 
         return "None"
     return query
-
-# *********************** Quit Function ***********************
-
-
-def quit():
-    speak("Thanks for using me sir, have a good day.")
-    exit()
+    
 
 # ********************* Send Email Function ***********************
-
-
 def sendEmail(To, Subject, content):
     # 587 is port number for gmail server
     server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -132,21 +115,25 @@ def sendEmail(To, Subject, content):
     server.send_message(Email)
     server.close()
 
+
 # ********************* Send Whatsapp Message Function ***********************
-
-
 def sendwhatsappmsg(phone_no, message):
     Message = message
-    webbrowser.open("https://web.whatsapp.com/send?phone=+91" +
-                    phone_no + "&text=" + Message)
+    webbrowser.open("https://web.whatsapp.com/send?phone=" + phone_no + "&text=" + Message)
     sleep(10)
     pyautogui.press('enter')
+
 
 # ********************* Take Screenshot Function ***********************
 # def screenshot():
 #     img = pyautogui.screenshot()
 #     img.save("C:\\Users\\Harsh\\Desktop\\Jarvis\\screenshot.png")
 
+
+# *********************** Quit Function ***********************
+def quit():
+    speak("Thanks for using me sir, have a good day.")
+    exit()
 
 # ********************* Main Function ***********************
 if __name__ == "__main__":
@@ -241,12 +228,11 @@ if __name__ == "__main__":
             speak(f"Sir, I have set the volume to {volume}")
 
         # *********** Send Email ***********
-        elif 'send email' in query:
-            email_list = {'testemail': ''}
+        elif 'mail' in query:
+            email_list = {'harshit': 'harshit.khandelwal20@pccoepune.org'}
             try:
                 speak("To Whom you want to send email?")
-                To = email_list[takeCommandMic()]
-
+                To = email_list[takeCommandMic().lower()]
                 speak("What should be the subject of email?")
                 Subject = takeCommandMic()
 
@@ -260,8 +246,10 @@ if __name__ == "__main__":
                 speak("Unable to send the email")
 
         # *********** Send Whatsapp Message ***********
-        elif 'send whatsapp message' in query:
-            user_name = {'test_name': '+91878855641'}
+        elif 'whatsapp' in query:
+            user_name = {
+                'Siddhi': '+91 70200 58417'
+                }
             try:
                 speak("To whom you want to send whatsapp message?")
                 phone_no = user_name[takeCommandMic()]
