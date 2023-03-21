@@ -16,14 +16,16 @@ import pyautogui  # pip install pyautogui == to auto press keyboard
 import clipboard
 import pyjokes  # pip install pyjokes == get jokes
 import string
-import random # pip install random == generate random password
-# import psutil # pip install psutil == get battery percentage
-# pip install python-dotenv == hide email and password
+import random  # pip install random == generate random password
+import psutil  # pip install psutil == get battery percentage
+# ! pip install python-dotenv == hide email and password
 
 from secrets import sender_email, sender_password, To
 engine = pyttsx3.init()
 
 # ********************* Speak Function ***********************
+
+
 def speak(audio):
     engine.say(audio)
     engine.runAndWait()
@@ -44,19 +46,8 @@ def getvoices(voice):
 # ********************* Time Function ***********************
 def time():
     Time = datetime.datetime.now().strftime("%I:%M:%S")
-    speak("THe current time is")
+    speak("The current time is")
     speak(Time)
-
-
-# ********************* Date Function ***********************
-def date():
-    year = int(datetime.datetime.now().year)
-    month = int(datetime.datetime.now().month)
-    date = int(datetime.datetime.now().day)
-    speak("The current date is")
-    speak(date)
-    speak(month)
-    speak(year)
 
 
 # ********************* Greeting Function ***********************
@@ -72,6 +63,17 @@ def greeting():
         speak("Good Night")
 
 
+# ********************* Date Function ***********************
+def date():
+    year = int(datetime.datetime.now().year)
+    month = int(datetime.datetime.now().month)
+    date = int(datetime.datetime.now().day)
+    speak("The current date is")
+    speak(date)
+    speak(month)
+    speak(year)
+
+
 # ********************* Wishme Function ***********************
 def wishme():
     speak("Welcome back sir!")
@@ -80,8 +82,8 @@ def wishme():
 
 
 # ~ ************ Take Command Through CMD Function *************
-def takeCommandCMD():
-    query = input("Command: ")
+def takeCommandCMD(info):
+    query = pyautogui.prompt(text=f'Enter {info}', title='Jarvis', default='')
     return query
 
 
@@ -172,15 +174,16 @@ def screenshot():
     img = pyautogui.screenshot(img_name)
     img.show()
 
-#. ********************* Generate Password Function ***********************
+# . ********************* Generate Password Function ***********************
 def generate_password():
     s1 = string.ascii_uppercase
     s2 = string.ascii_lowercase
     s3 = string.digits
     s4 = string.punctuation
 
-    speak("How long should the password be?")
-    passlen = int(takeCommandCMD())
+    speak("Please enter the password length")
+    text = "password length"
+    passlen = int(takeCommandCMD(text))
     password = []
     password.extend(list(s1))
     password.extend(list(s2))
@@ -191,6 +194,32 @@ def generate_password():
     password = ("".join(password[0:passlen]))
     speak("Your password is"+password)
     print(password)
+
+
+# ! ********************* find location ***********************
+def find_location():
+    speak("What is the location?")
+    location = takeCommandMic()
+    url = 'https://google.nl/maps/place/' + location + '/&amp;'
+    webbrowser.get().open(url)
+    speak("Here is the location of " + location)
+    pyautogui.click(x=394, y=159)
+
+
+# ********************* flip a coin ***********************
+def flip_coin():
+    print("flipping a coin...")
+    speak("flipping a coin")
+    coin = ['head', 'tail']
+    speak('I fliped the coin '+random.choice(coin))
+
+
+# ********************* roll a dice ***********************
+def roll_dice():
+    print("rolling a dice...")
+    dice = ['1', '2', '3', '4', '5', '6']
+    speak("rolling a dice")
+    speak('i rolled the dice you got '+random.choice(dice))
 
 
 # *********************** Quit Function ***********************
@@ -334,7 +363,7 @@ if __name__ == "__main__":
 
         # *********** Remember ***********
         elif 'remember that' in query:
-            try:    
+            try:
                 speak("What should i remember?")
                 data = takeCommandMic()
                 speak("You said me to remember that" + data)
@@ -353,7 +382,7 @@ if __name__ == "__main__":
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to remember that")
-        
+
         # *********** Volume ***********
         elif 'volume' in query:
             try:
@@ -467,6 +496,30 @@ if __name__ == "__main__":
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to generate the password")
+
+        # *********** flip a coin ***********
+        elif 'flip a coin' in query:
+            try:
+                flip_coin()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to flip the coin")
+
+        # *********** roll a dice ***********
+        elif 'roll a dice' in query:
+            try:
+                roll_dice()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to roll the dice")
+
+        # *********** find location ***********
+        elif 'location' in query:
+            try:
+                find_location()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find the location")
 
         # *********** Take Screenshot ***********
         elif 'screenshot' in query:
