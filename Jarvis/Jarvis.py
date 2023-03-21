@@ -15,6 +15,8 @@ from newsapi import NewsApiClient
 import pyautogui  # pip install pyautogui == to auto press keyboard
 import clipboard
 import pyjokes  # pip install pyjokes == get jokes
+import string
+import random # pip install random == generate random password
 # import psutil # pip install psutil == get battery percentage
 # pip install python-dotenv == hide email and password
 
@@ -169,6 +171,26 @@ def screenshot():
         img_name)
     img = pyautogui.screenshot(img_name)
     img.show()
+
+#. ********************* Generate Password Function ***********************
+def generate_password():
+    s1 = string.ascii_uppercase
+    s2 = string.ascii_lowercase
+    s3 = string.digits
+    s4 = string.punctuation
+
+    speak("How long should the password be?")
+    passlen = int(takeCommandCMD())
+    password = []
+    password.extend(list(s1))
+    password.extend(list(s2))
+    password.extend(list(s3))
+    password.extend(list(s4))
+
+    random.shuffle(password)
+    password = ("".join(password[0:passlen]))
+    speak("Your password is"+password)
+    print(password)
 
 
 # *********************** Quit Function ***********************
@@ -438,7 +460,13 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to find that")
 
-        # ************ battery & ********
+        # ************ password ********
+        elif 'password' in query:
+            try:
+                generate_password()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to generate the password")
 
         # *********** Take Screenshot ***********
         elif 'screenshot' in query:
