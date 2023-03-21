@@ -14,11 +14,10 @@ import pywhatkit
 from newsapi import NewsApiClient
 import pyautogui  # pip install pyautogui == to auto press keyboard
 import clipboard
-
+import pyjokes  # pip install pyjokes == get jokes
 # import psutil # pip install psutil == get battery percentage
-# import pyjokes # pip install pyjokes == get jokes
-
 # pip install python-dotenv == hide email and password
+
 from secrets import sender_email, sender_password, To
 engine = pyttsx3.init()
 
@@ -163,19 +162,22 @@ def text_to_speech():
 
 
 # ********************* Take Screenshot Function ***********************
-# def screenshot():
-#     img = pyautogui.screenshot()
-#     img.save("C:\\Users\\Harsh\\Desktop\\Jarvis\\screenshot.png")
+def screenshot():
+    speak("What name should i save the screenshot")
+    img_name = takeCommandMic()
+    img_name = 'C:\\Users\\khand\\OneDrive\\Pictures\\Screenshots\\{}.png'.format(
+        img_name)
+    img = pyautogui.screenshot(img_name)
+    img.show()
 
-    # *********************** Quit Function ***********************
 
-
+# *********************** Quit Function ***********************
 def quit():
     speak("Thanks for using me sir, have a good day.")
     exit()
 
 
-# ********************* Main Function ***********************
+# / ********************* Main Function ***********************
 if __name__ == "__main__":
     getvoices(1)
     # wishme()
@@ -256,11 +258,6 @@ if __name__ == "__main__":
             songs = os.listdir(music_dir)
             os.startfile(os.path.join(music_dir, songs[0]))
 
-        # *********** Open vs code workspace ***********
-        elif 'Python workspace' in query:
-            VsCodePath = "C:\\Users\\khand\\OneDrive\\Desktop\\Python-Copy.code-workspace"
-            os.startfile(VsCodePath)
-
         # *********** Remember ***********
         elif 'remember that' in query:
             speak("What should i remember?")
@@ -278,8 +275,11 @@ if __name__ == "__main__":
             speak(f"Sir, I have set the volume to {volume}")
 
         # ! *********** Send Email ***********
-        elif 'mail' in query:
+        elif 'send mail' in query:
             email_list = {'harshit': 'harshit.khandelwal20@pccoepune.org'}
+            for email in email_list:
+                print(email)
+
             try:
                 speak("To Whom you want to send email?")
                 To = email_list[takeCommandMic().lower()]
@@ -300,6 +300,10 @@ if __name__ == "__main__":
             user_name = {
                 'Siddhi': '+91 70200 58417'
             }
+            for user in user_name:
+                print(
+                    user
+                )
             try:
                 speak("To whom you want to send whatsapp message?")
                 phone_no = user_name[takeCommandMic().lower()]
@@ -326,12 +330,32 @@ if __name__ == "__main__":
         elif 'read' in query:
             text_to_speech()
 
-        # ********** Mail
-        # # *********** Take Screenshot ***********
-        # elif 'screenshot' in query:
-        #     speak("Taking screenshot...")
-        #     screenshot()
-        #     speak("Screenshot has been taken!")
+        # ************ Mail *************
+        elif 'rambox' in query:
+            rambox = "C:\\Program Files\\Rambox\\Rambox.exe"
+            os.startfile(rambox)
+
+        # *********** Open vs code workspace ***********
+        elif 'Python workspace' in query:
+            VsCodePath = "C:\\Users\\khand\\OneDrive\\Desktop\\Python-Copy.code-workspace"
+            os.startfile(VsCodePath)
+
+        # ! ************ c drive *************
+        elif 'open' in query:
+            os.startfile('explorer C://{}'.format(query.replace('open', '')))
+
+        # ********** joke *************
+        elif 'joke' in query:
+            print(pyjokes.get_joke())
+            speak(pyjokes.get_joke())
+
+        # ************ battery & ********
+
+        # *********** Take Screenshot ***********
+        elif 'screenshot' in query:
+            speak("Taking screenshot...")
+            screenshot()
+            speak("Screenshot has been taken!")
 
         # *********** Exit ***********
         elif 'exit' in query:
