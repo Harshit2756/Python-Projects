@@ -10,10 +10,11 @@ import webbrowser  # pip install webbrowser == open browser
 from time import sleep  # pip install time == sleep function to wait for some time
 import os  # pip install os == open file
 # pip install pywhatkit == to play video on youtube and send message on whatsapp grp
-# pip install pywhatkit == to play video on youtube and send message on whatsapp grp
 import pywhatkit
 from newsapi import NewsApiClient
-import pyautogui  # pip install pyautogui == take screenshot
+import pyautogui  # pip install pyautogui == to auto press keyboard
+import clipboard
+
 # import psutil # pip install psutil == get battery percentage
 # import pyjokes # pip install pyjokes == get jokes
 
@@ -22,8 +23,6 @@ from secrets import sender_email, sender_password, To
 engine = pyttsx3.init()
 
 # ********************* Speak Function ***********************
-
-
 def speak(audio):
     engine.say(audio)
     engine.runAndWait()
@@ -106,7 +105,7 @@ def takeCommandMic():
     return query
 
 
-# ********************* Send Email Function ***********************
+# ! ********************* Send Email Function ***********************
 def sendEmail(To, Subject, content):
     # 587 is port number for gmail server
     server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -139,6 +138,7 @@ def searchgoogle():
     webbrowser.open('https://www.google.com/search?q=' + search)
 
 
+# ***************** News update ****************
 def news():
     newsapi = NewsApiClient(api_key='5f5422d5735d45d2a17b21db6ed5859a')
     speak('what topic you need the news on?')
@@ -146,7 +146,7 @@ def news():
     data = newsapi.get_top_headlines(q='topic',
                                      language='en',
                                      page_size=5)
-    
+
     newsdata = data['articles']
     for x, y in enumerate(newsdata):
         print(f'{x},{y["description"]}')
@@ -155,12 +155,21 @@ def news():
     speak("that's all for now ")
 
 
+# *********** Text to speech ***********
+def text_to_speech():
+    text = clipboard.paste()
+    speak(text)
+    print(text)
+
+
 # ********************* Take Screenshot Function ***********************
 # def screenshot():
 #     img = pyautogui.screenshot()
 #     img.save("C:\\Users\\Harsh\\Desktop\\Jarvis\\screenshot.png")
 
     # *********************** Quit Function ***********************
+
+
 def quit():
     speak("Thanks for using me sir, have a good day.")
     exit()
@@ -177,7 +186,7 @@ if __name__ == "__main__":
         # convert query into lower case so we don't get error in if condition when we say "Open Youtube" instead of "open youtube" or "OPEN YOUTUBE" etc.
         query = takeCommandMic().lower()
 
-        # *********** time ***********
+        # /******* time ***********
         if 'time' in query:
             time()
 
@@ -268,7 +277,7 @@ if __name__ == "__main__":
             engine.setProperty('volume', volume)
             speak(f"Sir, I have set the volume to {volume}")
 
-        # *********** Send Email ***********
+        # ! *********** Send Email ***********
         elif 'mail' in query:
             email_list = {'harshit': 'harshit.khandelwal20@pccoepune.org'}
             try:
@@ -305,10 +314,19 @@ if __name__ == "__main__":
                 print(e)
                 speak("Unable to send the message")
 
-        # *********** wheather **
+        # ! *********** wheather **********
+        elif 'wheather' in query:
+            wether = query['wheather']
+
+        # *********** News **************
         elif 'news' in query:
             news()
 
+        # *********** Text to speech ********
+        elif 'read' in query:
+            text_to_speech()
+
+        # ********** Mail
         # # *********** Take Screenshot ***********
         # elif 'screenshot' in query:
         #     speak("Taking screenshot...")
