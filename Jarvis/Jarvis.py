@@ -19,15 +19,16 @@ import pyjokes  # pip install pyjokes == get jokes
 import string
 import random  # pip install random == generate random password
 import psutil  # pip install psutil == get battery percentage
-from nltk.tokenize import word_tokenize # pip install nltk == tokenization of words in a sentence 
+# pip install nltk == tokenization of words in a sentence
+from nltk.tokenize import word_tokenize
 # ! pip install python-dotenv == hide email and password
 
 from secrets import sender_email, sender_password, To
 
-from newvoices import speak
+# from newvoices import speak
 
 engine = pyttsx3.init()
-"""
+
 
 # ********************* Speak Function ***********************
 def speak(audio):
@@ -44,7 +45,7 @@ def getvoices(voice):
     if voice == 2:
         engine.setProperty('voice', voices[1].id)
         # speak("Hello sir to select my voice press 2")
-"""
+
 
 # ********************* Time Function ***********************
 def time():
@@ -177,6 +178,7 @@ def screenshot():
     img = pyautogui.screenshot(img_name)
     img.show()
 
+
 # ********************* Generate Password Function *********************
 def generate_password():
     s1 = string.ascii_uppercase
@@ -225,12 +227,6 @@ def roll_dice():
     speak('i rolled the dice you got '+random.choice(dice))
 
 
-# ********************* cpu usage ***********************
-def cpu():
-    usage = str(psutil.cpu_percent())
-    speak("CPU is at"+usage)
-
-
 # ********************* battery ***********************
 def battery():
     battery = psutil.sensors_battery()
@@ -252,326 +248,458 @@ if __name__ == "__main__":
     while True:
 
         # convert query into lower case so we don't get error in if condition when we say "Open Youtube" instead of "open youtube" or "OPEN YOUTUBE" etc.
-        query = takeCommandMic().lower()
-        query = word_tokenize(query)
-        print (query)
 
-        wake_word="jarvis"
+        print(query)
+        query = query.lower()
 
-        if wake_word in query:
+        # ******* time ***********
+        if 'time' in query:
+            try:
+                time()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
 
-            # ******* time ***********
-            if 'time' in query:
-                try:
-                    time()
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to find that")
+        # *********** date ***********
+        elif 'date' in query:
+            try:
+                date()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
 
-            # *********** date ***********
-            elif 'date' in query:
-                try:
-                    date()
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to find that")
+        # . *********** open camera ***********
+        elif 'open camera' in query:
+            try:
+                speak("Opening camera")
+                print("Opening camera ...")
+                os.system("start microsoft.windows.camera:")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
-            # *********** wikipedia ***********
-            elif 'wikipedia' in query:
-                try:
-                    speak("Searching Wikipedia...")
-                    # replace wikipedia with nothing in the query string so we don't get error in wikipedia search process when searching for something like "wikipedia time"
-                    query = query.replace("wikipedia", "")
-                    # Wikipedia will give the summary in 2 sentences of the query  # pip install wikipedia
-                    results = wikipedia.summary(query, sentences=2)
-                    speak("According to Wikipedia")
-                    print(results)
-                    speak(results)
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to find that")
+        # . *********** open cmd ***********
+        elif 'open cmd' in query:
+            try:
+                speak("Opening cmd")
+                print("Opening cmd ...")
+                os.system("start cmd")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
-            # ********** google ***********
-            elif 'search google' in query:
-                try:
-                    search_google()
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to find that")
+        # . *********** open notepad ***********
+        elif 'open notepad' in query:
+            try:
+                speak("Opening notepad")
+                print("Opening notepad ...")
+                os.system("start notepad")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
-            # *********** Open Youtube ***********
-            elif 'open youtube' in query:
-                try:
-                    speak("Opening Youtube...")
-                    webbrowser.open("youtube.com")
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to find that")
+        # . *********** open paint ***********
+        elif 'open paint' in query:
+            try:
+                speak("Opening paint")
+                print("Opening paint ...")
+                os.system("start mspaint")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
-            # ************* youtube search ********
-            elif 'search youtube' in query:
-                try:
-                    speak("what should i search on youtube?")
-                    topic = takeCommandMic()
-                    pywhatkit.playonyt(topic)
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to find that")
+        # . *********** open calculator ***********
+        elif 'open calculator' in query:
+            try:
+                speak("Opening calculator")
+                print("Opening calculator ...")
+                os.system("start calc")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
-            # *********** Open Google ***********
-            elif 'open google' in query:
-                try:
-                    speak("Opening Google...")
-                    webbrowser.open("google.com")
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to do that")
+        # . *********** open control panel ***********
+        elif 'open control panel' in query:
+            try:
+                speak("Opening control panel")
+                print("Opening control panel ...")
+                os.system("start control")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
-            # *********** Open Stackoverflow ***********
-            elif 'open stackoverflow' in query:
-                try:
-                    speak("Opening Stackoverflow...")
-                    webbrowser.open("stackoverflow.com")
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to find that")
+        # . *********** open task manager ***********
+        elif 'open task manager' in query:
+            try:
+                speak("Opening task manager")
+                print("Opening task manager ...")
+                os.system("start taskmgr")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
-            # *********** Open Github ***********
-            elif 'open github' in query:
-                try:
-                    speak("Opening Github...")
-                    webbrowser.open("github.com")
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to find that")
+        # . *********** open file explorer ***********
+        elif 'open file explorer' in query:
+            try:
+                speak("Opening file explorer")
+                print("Opening file explorer ...")
+                os.system("start explorer")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
-            # *********** Open Facebook ***********
-            elif 'open facebook' in query:
-                try:
-                    speak("Opening Facebook...")
-                    webbrowser.open("facebook.com")
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to find that")
+        # . *********** open onenote ***********
+        elif 'open onenote' in query:
+            try:
+                speak("Opening onenote")
+                print("Opening onenote ...")
+                os.system("start onenote")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
-            # *********** Open Instagram ***********
-            elif 'open instagram' in query:
-                try:
-                    speak("Opening Instagram")
-                    webbrowser.open("instagram.com")
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to do that")
+        # . *********** open powerpoint ***********
+        elif 'open powerpoint' in query:
+            try:
+                speak("Opening powerpoint")
+                print("Opening powerpoint ...")
+                os.system("start powerpnt")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
-            # *********** Open Classroom ***********
-            elif 'Classroom' in query:
-                try:
-                    speak("Opening Classroom")
-                    webbrowser.open("classroom.google.com")
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to do that")
+        # . *********** open word ***********
+        elif 'open word' in query:
+            try:
+                speak("Opening word")
+                print("Opening word ...")
+                os.system("start winword")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
-            # *********** Play music ***********
-            elif 'play music' in query:
-                try:
-                    music_dir = 'D:\Songs\Hanuman ji'
-                    songs = os.listdir(music_dir)
-                    os.startfile(os.path.join(music_dir, songs[0]))
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to play music")
+        # . *********** open excel ***********
+        elif 'open excel' in query:
+            try:
+                speak("Opening excel")
+                print("Opening excel ...")
+                os.system("start excel")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
-            # *********** Remember ***********
-            elif 'remember that' in query:
-                try:
-                    speak("What should i remember?")
-                    data = takeCommandMic()
-                    speak("You said me to remember that" + data)
-                    remember = open('data.txt', 'w')
-                    remember.write(data)
-                    remember.close()
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to remember that")
+        # . ************ rambox *************
+        elif 'rambox' in query:
+            try:
+                rambox = "C:\\Program Files\\Rambox\\Rambox.exe"
+                os.startfile(rambox)
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
 
-            # *********** Do you remember ***********
-            elif 'do you remember anything' in query:
-                try:
-                    remember = open('data.txt', 'r')
-                    speak("You said me to remember that" + remember.read())
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to remember that")
+        # . ************ chrome *************
+        elif 'chrome' in query:
+            try:
+                chrome = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
+                os.startfile(chrome)
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
 
-            # *********** Volume ***********
-            elif 'volume' in query:
-                try:
-                    speak("Sir, please tell me the volume level you want to set")
-                    volume = takeCommandMic()
-                    engine.setProperty('volume', volume)
-                    speak(f"Sir, I have set the volume to {volume}")
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to set the volume")
+        # . ************ notion *************   
+        elif 'notion' in query:
+            try:
+                notion = "C:\Users\khand\AppData\Local\Programs\Notion\Notion.exe"
+                os.startfile(notion)
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
 
-            # ! *********** Send Email ***********
-            elif 'send mail' in query:
-                email_list = {'harshit': 'harshit.khandelwal20@pccoepune.org'}
-                for email in email_list:
-                    print(email)
+        # . ************ Prime video *************
+        elif 'prime video' in query:
+            try:
+                primevideo = "C:\Program Files\WindowsApps\AmazonVideo.PrimeVideo_1.0.116.0_x64__pwbj9vvecjh7j\PrimeVideo.exe"
+                os.startfile(primevideo)
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
 
-                try:
-                    speak("To Whom you want to send email?")
-                    To = email_list[takeCommandMic().lower()]
-                    speak("What should be the subject of email?")
-                    Subject = takeCommandMic()
+        # . ************ telegram *************
+        elif 'telegram' in query:
+            try:
+                telegram = "C:\Program Files\WindowsApps\TelegramMessengerLLP.TelegramDesktop_4.6.3.0_x64__t4vj0pshhgkwm\Telegram.exe"
+                os.startfile(telegram)
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
 
-                    speak("What should i say?")
-                    content = takeCommandMic()
+        # . *********** Open vs code workspace ***********
+        elif 'Python workspace' in query:
+            try:
+                VsCodePath = "C:\\Users\\khand\\OneDrive\\Desktop\\Python-Copy.code-workspace"
+                os.startfile(VsCodePath)
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
 
-                    sendEmail(To, Subject, content)
-                    speak("Email has been sent!")
-                except Exception as e:
-                    print(e)
-                    speak("Unable to send the email")
+        # *********** wikipedia ***********
+        elif 'wikipedia' in query:
+            try:
+                speak("Searching Wikipedia...")
+                # replace wikipedia with nothing in the query string so we don't get error in wikipedia search process when searching for something like "wikipedia time"
+                query = query.replace("wikipedia", "")
+                # Wikipedia will give the summary in 2 sentences of the query  # pip install wikipedia
+                results = wikipedia.summary(query, sentences=2)
+                speak("According to Wikipedia")
+                print(results)
+                speak(results)
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
 
-            # *********** Send Whatsapp Message ***********
-            elif 'whatsapp' in query:
-                user_name = {
-                    'Siddhi': '+91 70200 58417'
-                }
-                for user in user_name:
-                    print(
-                        user
-                    )
-                try:
-                    speak("To whom you want to send whatsapp message?")
-                    phone_no = user_name[takeCommandMic().lower()]
+        # ********* search google *********
+        elif 'search google' in query:
+            try:
+                search_google()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
 
-                    speak("What should i say?")
-                    message = takeCommandMic()
+        # *********** Open Youtube ***********
+        elif 'open youtube' in query:
+            try:
+                speak("Opening Youtube...")
+                webbrowser.open("youtube.com")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
 
-                    sendwhatsappmsg(phone_no, message)
-                    speak("Message has been sent!")
+        # ************* youtube search ********
+        elif 'search youtube' in query:
+            try:
+                speak("what should i search on youtube?")
+                topic = takeCommandMic()
+                pywhatkit.playonyt(topic)
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
 
-                except Exception as e:
-                    print(e)
-                    speak("Unable to send the message")
+        # *********** Open Google ***********
+        elif 'open google' in query:
+            try:
+                speak("Opening Google...")
+                webbrowser.open("google.com")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
-            # ! *********** wheather **********
-            elif 'wheather' in query:
-                wether = query['wheather']
+        # *********** Open Stackoverflow ***********
+        elif 'open stackoverflow' in query:
+            try:
+                speak("Opening Stackoverflow...")
+                webbrowser.open("stackoverflow.com")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
 
-            # *********** News **************
-            elif 'news' in query:
-                try:
-                    news()
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to find that")
+        # *********** Open Github ***********
+        elif 'open github' in query:
+            try:
+                speak("Opening Github...")
+                webbrowser.open("github.com")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
 
-            # *********** Text to speech ********
-            elif 'read' in query:
-                try:
-                    text_to_speech()
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to find that")
+        # *********** Open Facebook ***********
+        elif 'open facebook' in query:
+            try:
+                speak("Opening Facebook...")
+                webbrowser.open("facebook.com")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
 
-            # ************ rambox *************
-            elif 'rambox' in query:
-                try:
-                    rambox = "C:\\Program Files\\Rambox\\Rambox.exe"
-                    os.startfile(rambox)
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to find that")
+        # *********** Open Instagram ***********
+        elif 'open instagram' in query:
+            try:
+                speak("Opening Instagram")
+                webbrowser.open("instagram.com")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
-            # *********** Open vs code workspace ***********
-            elif 'Python workspace' in query:
-                try:
-                    VsCodePath = "C:\\Users\\khand\\OneDrive\\Desktop\\Python-Copy.code-workspace"
-                    os.startfile(VsCodePath)
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to find that")
+        # *********** Open Classroom ***********
+        elif 'Classroom' in query:
+            try:
+                speak("Opening Classroom")
+                webbrowser.open("classroom.google.com")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
-            # ! ************ c drive *************
-            elif 'open' in query:
-                os.startfile('explorer C://{}'.format(query.replace('open', '')))
+        # *********** Open Gmail ***********
+        elif 'open gmail' in query:
+            try:
+                speak("Opening Gmail...")
+                webbrowser.open("gmail.com")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
 
-            # ********** joke *************
-            elif 'joke' in query:
-                try:
-                    print(pyjokes.get_joke())
-                    speak(pyjokes.get_joke())
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to find that")
+        # *********** Play music ***********
+        elif 'play music' in query:
+            try:
+                music_dir = 'D:\Songs\Hanuman ji'
+                songs = os.listdir(music_dir)
+                os.startfile(os.path.join(music_dir, songs[0]))
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to play music")
 
-            # ************ password ********
-            elif 'password' in query:
-                try:
-                    generate_password()
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to generate the password")
+        # *********** Volume ***********
+        elif 'volume' in query:
+            try:
+                speak("Sir, please tell me the volume level you want to set")
+                volume = takeCommandMic()
+                engine.setProperty('volume', volume)
+                speak(f"Sir, I have set the volume to {volume}")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to set the volume")
 
-            # *********** flip a coin ***********
-            elif 'flip a coin' in query:
-                try:
-                    flip_coin()
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to flip the coin")
+        # ! *********** Send Email ***********
+        elif 'send mail' in query:
+            email_list = {'harshit': 'harshit.khandelwal20@pccoepune.org'}
+            for email in email_list:
+                print(email)
 
-            # *********** roll a dice ***********
-            elif 'roll a dice' in query:
-                try:
-                    roll_dice()
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to roll the dice")
+            try:
+                speak("To Whom you want to send email?")
+                To = email_list[takeCommandMic().lower()]
+                speak("What should be the subject of email?")
+                Subject = takeCommandMic()
 
-            # *********** find location ***********
-            elif 'location' in query:
-                try:
-                    find_location()
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to find the location")
+                speak("What should i say?")
+                content = takeCommandMic()
 
-            # *********** Take Screenshot ***********
-            elif 'screenshot' in query:
-                try:
-                    speak("Taking screenshot...")
-                    screenshot()
-                    speak("Screenshot has been taken!")
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to do that")
+                sendEmail(To, Subject, content)
+                speak("Email has been sent!")
+            except Exception as e:
+                print(e)
+                speak("Unable to send the email")
 
-            # *********** Battery CPU ***********
-            elif 'battery' in query:
-                try:
-                    battery()
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to do that")
+        # *********** Send Whatsapp Message ***********
+        elif 'whatsapp' in query:
+            user_name = {
+                'Siddhi': '+91 70200 58417'
+            }
+            for user in user_name:
+                print(
+                    user
+                )
+            try:
+                speak("To whom you want to send whatsapp message?")
+                phone_no = user_name[takeCommandMic().lower()]
 
-            # *********** CPU ***********
-            elif 'cpu' in query:
-                try:
-                    cpu()
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to do that")
+                speak("What should i say?")
+                message = takeCommandMic()
 
-            # *********** Exit ***********
-            elif 'exit' in query:
-                try:
-                    quit()
-                except Exception as e:
-                    print(e)
-                    speak("Sorry, I am not able to do that")
+                sendwhatsappmsg(phone_no, message)
+                speak("Message has been sent!")
+
+            except Exception as e:
+                print(e)
+                speak("Unable to send the message")
+
+        # *********** News **************
+        elif 'news' in query:
+            try:
+                news()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
+
+        # *********** Text to speech ********
+        elif 'read' in query:
+            try:
+                text_to_speech()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
+
+        # *********** Take Screenshot ***********
+        elif 'screenshot' in query:
+            try:
+                speak("Taking screenshot...")
+                screenshot()
+                speak("Screenshot has been taken!")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+
+        # *********** Battery CPU ***********
+        elif 'battery' in query:
+            try:
+                battery()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+
+        # *********** CPU ***********
+        elif 'cpu' in query:
+            try:
+                usage = str(psutil.cpu_percent())
+                speak("CPU is at"+usage)
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+
+        # ********** joke *************
+        elif 'joke' in query:
+            try:
+                print(pyjokes.get_joke())
+                speak(pyjokes.get_joke())
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
+
+        # ************ password ********
+        elif 'password' in query:
+            try:
+                generate_password()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to generate the password")
+
+        # *********** flip a coin ***********
+        elif 'flip a coin' in query:
+            try:
+                flip_coin()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to flip the coin")
+
+        # *********** roll a dice ***********
+        elif 'roll a dice' in query:
+            try:
+                roll_dice()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to roll the dice")
+
+        # *********** find location ***********
+        elif 'location' in query:
+            try:
+                find_location()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find the location")
+
+        # *********** Exit ***********
+        elif 'exit' in query:
+            try:
+                quit()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
