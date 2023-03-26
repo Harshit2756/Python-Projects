@@ -1,24 +1,27 @@
-import ctypes
+import ctypes # pip install ctypes == to system call
+import pytube # pip install pytube == download youtube video
 import pyttsx3  # pip install pyttsx3  == text data into speech
 import datetime  # pip install datetime == get date and time
 # pip install speechRecognition == speech data into text
 import speech_recognition as sr
 import smtplib  # pip install secure-smtplib == send email
 # pip install email == send email with attachment
-from email.message import EmailMessage
 import wikipedia  # pip install wikipedia == search wikipedia
 import webbrowser  # pip install webbrowser == open browser
-from time import sleep  # pip install time == sleep function to wait for some time
 import os  # pip install os == open file
 # pip install pywhatkit == to play video on youtube and send message on whatsapp grp
 import pywhatkit
-from newsapi import NewsApiClient
 import pyautogui  # pip install pyautogui == to auto press keyboard
 import clipboard
 import pyjokes  # pip install pyjokes == get jokes
 import string
+import speedtest  # pip install speedtest-cli == get internet speed
 import random  # pip install random == generate random password
 import psutil  # pip install psutil == get battery percentage
+from requests import get  # pip install requests == to get ip address
+from email.message import EmailMessage
+from time import sleep  # pip install time == sleep function to wait for some time
+from newsapi import NewsApiClient
 # pip install nltk == tokenization of words in a sentence
 from nltk.tokenize import word_tokenize
 # ! pip install python-dotenv == hide email and password
@@ -35,16 +38,16 @@ def speak(audio):
     engine.say(audio)
     engine.runAndWait()
 
+
 # ********************* Voice Change Function ***********************
-def getvoices(voice):
+def change_voice():
     voices = engine.getProperty('voices')
-    # print(voices[1].id)
-    if voice == 1:
-        engine.setProperty('voice', voices[0].id)
-        # speak("Hello sir to select my voice press 1")
-    if voice == 2:
+    if voices == 0:
         engine.setProperty('voice', voices[1].id)
-        # speak("Hello sir to select my voice press 2")
+    if voices == 1:
+        engine.setProperty('voice', voices[0].id)
+
+    speak("Hello sir ,I have successfully changed my voice")
 
 
 # ********************* Time Function ***********************
@@ -87,7 +90,7 @@ def wishme():
 
 # ************ Take Command Through CMD Function *************
 def takeCommandCMD(info):
-    query = pyautogui.prompt(text=f'Enter {info}', title='Jarvis', default='')
+    query = pyautogui.prompt(text=f'{info}', title='Jarvis', default='')
     return query
 
 
@@ -112,7 +115,7 @@ def takeCommandMic():
     return query
 
 
-# ! ********************* Send Email Function ***********************
+#  ********************* Send Email Function ***********************
 def sendEmail(To, Subject, content):
     # 587 is port number for gmail server
     server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -128,21 +131,52 @@ def sendEmail(To, Subject, content):
     server.close()
 
 
-# ~ ********************* Send Whatsapp Message Function ***********************
-def sendwhatsappmsg(phone_no, message):
-    Message = message
-    webbrowser.open("https://web.whatsapp.com/send?phone=+91" +
-                    phone_no + "&text=" + Message)
-    #!use pywhatkit instead to send the message/images to the grp  refer :https://pypi.org/project/pywhatkit/
-    sleep(10)
-    pyautogui.press('enter')
+# ********************* Send Whatsapp Message Function ***********************
+def sendwhatsappmsg(to):
+    #! use pywhatkit instead to send the message/images to the grp  refer :https://pypi.org/project/pywhatkit/
 
+    user_name = {'harshit': '+91 63536 59331','pranam': '+91 70415 87406','adu padu': '+91 93257 61961','gayatri kulkarni': '+91 80104 49116'}
+    grp_name = {'me', 'itsa', 'error 202'}
+    if to in user_name:
+        to = user_name[to]
+        speak("What should i say?")
+        message = takeCommandMic()
+        pywhatkit.sendwhatmsg_instantly(f'{to}', f"{message}")
+    elif to in grp_name:
+        to = grp_name[to]
+        speak("What should i say?")
+        message = takeCommandMic()
+        pywhatkit.sendwhatmsg_to_group_instantly(f'{to}', f"{message}")
+    else:
+        speak("I don't have the contact in my database")
 
-# ********************* search google ***********************
-def search_google():
-    speak('Whats should i search for?')
-    search = takeCommandMic()
-    webbrowser.open('https://www.google.com/search?q=' + search)
+# ********************* Send Whatsapp Image Function ***********************
+def sendwhatsappimg(to, message):
+    user_name = {'harshit': '+91 63536 59331', 'pranam': '+91 70415 87406',
+                 'adu padu': '+91 93257 61961', 'gayatri kulkarni': '+91 80104 49116'}
+    grp_name = {'me', 'itsa', 'error 202'}
+    if to in user_name:
+        to = user_name[to]
+
+        speak("What should i say?")
+        message = takeCommandMic()
+        
+        speak("What is the path of the image?")
+        image_path = takeCommandCMD("Enter the path of the image:")
+
+        pywhatkit.sendwhats_image(f"{to}", f"{image_path}", f"{message}")
+    elif to in grp_name:
+        to = grp_name[to]
+        
+        speak("What should i say?")
+        message = takeCommandMic()
+
+        speak("What is the path of the image?")
+        image_path = takeCommandCMD("Enter the path of the image:")
+        
+        pywhatkit.sendwhats_to_group(f"{to}", f"{image_path}", f"{message}")
+    else:
+        speak("I don't have the contact in my database")
 
 
 # ***************** News update ****************
@@ -200,45 +234,8 @@ def generate_password():
     speak("Your password is"+password)
     print(password)
 
-
-# ********************* Find location ***********************
-def find_location():
-    speak("What is the location?")
-    location = takeCommandMic()
-    url = 'https://google.nl/maps/place/' + location + '/&amp;'
-    webbrowser.get().open(url)
-    speak("Here is the location of " + location)
-    pyautogui.click(x=394, y=159)
-
-
-# ********************* Flip a coin ***********************
-def flip_coin():
-    print("flipping a coin...")
-    speak("flipping a coin")
-    coin = ['head', 'tail']
-    speak('I fliped the coin '+random.choice(coin))
-
-
-# ********************* Roll a dice ***********************
-def roll_dice():
-    print("rolling a dice...")
-    dice = ['1', '2', '3', '4', '5', '6']
-    speak("rolling a dice")
-    speak('i rolled the dice you got '+random.choice(dice))
-
-
-# ********************* battery ***********************
-def battery():
-    battery = psutil.sensors_battery()
-    speak("Battery is at")
-    speak(battery.percent)
-
-
-# *********************** Quit Function ***********************
-def quit():
-    speak("Thanks for using me sir, have a good day.")
-    exit()
-
+# todo: if the below logic work concise all the other things like open google, open youtube etc. into one set
+quit = {'quit', 'exit', 'bye', 'goodbye', 'see you later', 'see you soon', 'see you','good night', 'goodbye jarvis', 'good night jarvis', 'good bye', 'good night sir'}
 
 # / ********************* Main Function ***********************
 if __name__ == "__main__":
@@ -267,6 +264,16 @@ if __name__ == "__main__":
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to find that")
+
+        # *********** change voice ***********
+        elif 'change voice' in query:
+            try:
+                speak("Changing voice")
+                print("Changing voice ...")
+                change_voice()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
         # . *********** open camera ***********
         elif 'open camera' in query:
@@ -397,19 +404,10 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to find that")
 
-        # . ************ chrome *************
-        elif 'chrome' in query:
-            try:
-                chrome = "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"
-                os.startfile(chrome)
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to find that")
-
-        # . ************ notion *************   
+        # . ************ notion *************
         elif 'notion' in query:
             try:
-                notion = "C:\Users\khand\AppData\Local\Programs\Notion\Notion.exe"
+                notion = "C:\Users\\khand\\AppData\\Local\\Programs\\Notion\\Notion.exe"
                 os.startfile(notion)
             except Exception as e:
                 print(e)
@@ -418,16 +416,16 @@ if __name__ == "__main__":
         # . ************ Prime video *************
         elif 'prime video' in query:
             try:
-                primevideo = "C:\Program Files\WindowsApps\AmazonVideo.PrimeVideo_1.0.116.0_x64__pwbj9vvecjh7j\PrimeVideo.exe"
+                primevideo = "C:\\Program Files\\WindowsApps\\AmazonVideo.PrimeVideo_1.0.116.0_x64__pwbj9vvecjh7j\\PrimeVideo.exe"
                 os.startfile(primevideo)
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to find that")
 
-        # . ************ telegram *************
+        # . ************ Telegram *************
         elif 'telegram' in query:
             try:
-                telegram = "C:\Program Files\WindowsApps\TelegramMessengerLLP.TelegramDesktop_4.6.3.0_x64__t4vj0pshhgkwm\Telegram.exe"
+                telegram = "C:\\Program Files\\WindowsApps\\TelegramMessengerLLP.TelegramDesktop_4.6.3.0_x64__t4vj0pshhgkwm\\Telegram.exe"
                 os.startfile(telegram)
             except Exception as e:
                 print(e)
@@ -441,6 +439,188 @@ if __name__ == "__main__":
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to find that")
+
+        # *********** Text to speech ********
+        elif 'read' in query:
+            try:
+                text_to_speech()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to find that")
+
+        # *********** Take Screenshot ***********
+        elif 'screenshot' in query:
+            try:
+                speak("Taking screenshot...")
+                screenshot()
+                speak("Screenshot has been taken!")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+
+        # *********** Battery CPU ***********
+        elif 'battery' in query:
+            try:
+                battery = psutil.sensors_battery()
+                speak("Battery is at")
+                speak(battery.percent)
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+
+        # *********** CPU ***********
+        elif 'cpu' in query:
+            try:
+                usage = str(psutil.cpu_percent())
+                speak("CPU is at"+usage)
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+
+        # *********** volume ***********
+        elif 'volume' in query:
+            if ('volume up' in query) or ('increase volume' in query):
+                try:
+                    pyautogui.press("volumeup")
+                    speak("Volume increased")
+                except Exception as e:
+                    print(e)
+                    speak("Sorry, I am not able to do that")
+            elif ('volume down' in query) or ('decrease volume' in query):
+                try:
+                    pyautogui.press("volumedown")
+                    speak("Volume decreased")
+                except Exception as e:
+                    print(e)
+                    speak("Sorry, I am not able to do that")
+            elif ('mute volume' in query) or ('mute' in query):
+                try:
+                    pyautogui.press("volumemute")
+                    speak("Volume muted")
+                except Exception as e:
+                    print(e)
+                    speak("Sorry, I am not able to do that")
+
+        # *********** jarvis volume ***********
+        elif 'your volume' in query:
+            try:
+                speak("Sir, please tell me the volume level you want to set for me")
+                volume = takeCommandMic()
+                engine.setProperty('volume', volume)
+                speak(f"Sir, I have set the volume to {volume}")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to set the volume")
+
+        # ~ *********** shutdown ***********
+        elif 'shutdown' in query:
+            try:
+                speak("Shutting down the system")
+                os.system("shutdown /s /t 1")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+            
+        # ~ *********** restart ***********
+        elif 'restart' in query:
+            try:
+                speak("Restarting the system")
+                os.system("shutdown /r /t 1")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+        
+        # ~ *********** sleep ***********
+        elif 'sleep' in query:  
+            try:
+                speak("Sleeping the system")
+                os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+
+        # ~ *********** lock ***********
+        elif 'lock' in query:
+            try:
+                speak("Locking the system")
+                ctypes.windll.user32.LockWorkStation()
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+
+        # ~ *********** logout ***********
+        elif 'logout' in query:
+            try:
+                speak("Logging out the system")
+                os.system("shutdown -l")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+
+        # ~ *********** hibernate ***********
+        elif 'hibernate' in query:
+            try:
+                speak("Hibernating the system")
+                os.system("shutdown /h")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+        
+        # ~ *********** change wallpaper ***********
+        elif 'change wallpaper' in query:
+            try:
+                speak("Changing wallpaper")
+                speak("What is the path of the wallpaper?")
+                wallpaper_path = takeCommandCMD("Enter the path of the wallpaper:")
+                ctypes.windll.user32.SystemParametersInfoW(20, 0, wallpaper_path, 0)
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+
+        # ! *********** recording ***********
+        elif ("recording" in query) or ("screen recording" in query) or ("voice recording" in query):
+            try:
+                speak("Sir press q key to stop recordings")
+                option = takeCommandMic()
+                Record_Option(option=option)
+                speak("Sir recording is being saved")
+            except:
+                speak("Sir an unexpected error occured couldn't start screen recording")
+
+        # ! *********** track a mobile number ***********
+        elif ("track" in query) or ("track a mobile number" in query):
+            speak("Sir please enter the mobile number with country code")
+            try:
+                location, servise_prover, lat, lng = Phonenumber_location_tracker()
+                speak(f"Sir the mobile number is from {location} and the service provider for the mobile number is {servise_prover}")
+                speak(f"latitude of that mobile nuber is {lat} and longitude of that mobile number is {lng}")
+                print(location, servise_prover)
+                print(f"Latitude : {lat} and Longitude : {lng}")
+                speak("Sir location of the mobile number is saved in Maps")
+            except:
+                speak("Sir an unexpected error occured couldn't track the mobile number")
+
+        # *********** internet speed ***********
+        elif 'internet speed' in query:
+            try:
+                speak("Checking internet speed")
+                st = speedtest.Speedtest()
+                down = st.download()
+                up = st.upload()
+                speak(f"Download speed is {down}")
+                speak(f"Upload speed is {up}")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+        
+        # *********** ip address ***********
+        elif 'ip address' in query:
+            try:
+                ip = get('https://api.ipify.org').text
+                speak(f"Your IP address is {ip}")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
         # *********** wikipedia ***********
         elif 'wikipedia' in query:
@@ -457,10 +637,21 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to find that")
 
+        # *********** Open Google ***********
+        elif 'open google' in query:
+            try:
+                speak("Opening Google...")
+                webbrowser.open("google.com")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+
         # ********* search google *********
         elif 'search google' in query:
             try:
-                search_google()
+                speak('Whats should i search for?')
+                search = takeCommandMic()
+                webbrowser.open('https://www.google.com/search?q=' + search)
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to find that")
@@ -484,14 +675,21 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to find that")
 
-        # *********** Open Google ***********
-        elif 'open google' in query:
+        # ! *********** youtube download ***********
+        elif 'download youtube' in query:
             try:
-                speak("Opening Google...")
-                webbrowser.open("google.com")
+                speak("Sir please enter the link of the video")
+                link = takeCommandCMD("Enter the link of the video:")
+                speak("Sir please enter the path where you want to save the video")
+                path = takeCommandCMD("Enter the path where you want to save the video:")
+                speak("Sir please enter the name of the video")
+                name = takeCommandCMD("Enter the name of the video:")
+                speak("Downloading the video")
+                pytube.YouTube(link).streams.first().download(path, name)
+                speak("Video downloaded")
             except Exception as e:
                 print(e)
-                speak("Sorry, I am not able to do that")
+                speak("Sorry, I am not able to find that")
 
         # *********** Open Stackoverflow ***********
         elif 'open stackoverflow' in query:
@@ -529,7 +727,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to do that")
 
-        # *********** Open Classroom ***********
+        # ! *********** Open Classroom ***********
         elif 'Classroom' in query:
             try:
                 speak("Opening Classroom")
@@ -557,26 +755,27 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to play music")
 
-        # *********** Volume ***********
-        elif 'volume' in query:
+        # *********** find location ***********
+        elif 'location' in query:
             try:
-                speak("Sir, please tell me the volume level you want to set")
-                volume = takeCommandMic()
-                engine.setProperty('volume', volume)
-                speak(f"Sir, I have set the volume to {volume}")
+                speak("What is the location?")
+                location = takeCommandMic()
+                speak("Hold on, I will show you " +
+                      location + "on google maps")
+                url = 'https://google.nl/maps/place/' + location + '/&amp;'
+                webbrowser.get().open(url)
+                speak("Here is the location of " + location)
+                pyautogui.click(x=394, y=159)
             except Exception as e:
                 print(e)
-                speak("Sorry, I am not able to set the volume")
+                speak("Sorry, I am not able to find the location")
 
         # ! *********** Send Email ***********
         elif 'send mail' in query:
-            email_list = {'harshit': 'harshit.khandelwal20@pccoepune.org'}
-            for email in email_list:
-                print(email)
-
             try:
                 speak("To Whom you want to send email?")
-                To = email_list[takeCommandMic().lower()]
+                To = takeCommandCMD("Enter the Email Id ?")
+
                 speak("What should be the subject of email?")
                 Subject = takeCommandMic()
 
@@ -591,23 +790,22 @@ if __name__ == "__main__":
 
         # *********** Send Whatsapp Message ***********
         elif 'whatsapp' in query:
-            user_name = {
-                'Siddhi': '+91 70200 58417'
-            }
-            for user in user_name:
-                print(
-                    user
-                )
             try:
-                speak("To whom you want to send whatsapp message?")
-                phone_no = user_name[takeCommandMic().lower()]
+                speak("To whom you want to whatsapp ?")
+                to = takeCommandMic().lower()
 
-                speak("What should i say?")
-                message = takeCommandMic()
+                speak("what do you want to send ,image or message?")
+                type = takeCommandMic().lower()
+                if type == "image":
+                    speak("To whom you want to send whatsapp image?")
+                    to = takeCommandMic().lower()
 
-                sendwhatsappmsg(phone_no, message)
-                speak("Message has been sent!")
+                    sendwhatsappimg(to)
 
+                    speak("Image has been sent!")
+                elif type == "message":
+                    sendwhatsappmsg(to)
+                    speak("Message has been sent!")
             except Exception as e:
                 print(e)
                 speak("Unable to send the message")
@@ -619,41 +817,6 @@ if __name__ == "__main__":
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to find that")
-
-        # *********** Text to speech ********
-        elif 'read' in query:
-            try:
-                text_to_speech()
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to find that")
-
-        # *********** Take Screenshot ***********
-        elif 'screenshot' in query:
-            try:
-                speak("Taking screenshot...")
-                screenshot()
-                speak("Screenshot has been taken!")
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
-
-        # *********** Battery CPU ***********
-        elif 'battery' in query:
-            try:
-                battery()
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
-
-        # *********** CPU ***********
-        elif 'cpu' in query:
-            try:
-                usage = str(psutil.cpu_percent())
-                speak("CPU is at"+usage)
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
 
         # ********** joke *************
         elif 'joke' in query:
@@ -675,7 +838,10 @@ if __name__ == "__main__":
         # *********** flip a coin ***********
         elif 'flip a coin' in query:
             try:
-                flip_coin()
+                print("flipping a coin...")
+                speak("flipping a coin")
+                coin = ['head', 'tail']
+                speak('I fliped the coin '+random.choice(coin))
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to flip the coin")
@@ -683,23 +849,31 @@ if __name__ == "__main__":
         # *********** roll a dice ***********
         elif 'roll a dice' in query:
             try:
-                roll_dice()
+                print("rolling a dice...")
+                dice = ['1', '2', '3', '4', '5', '6']
+                speak("rolling a dice")
+                speak('i rolled the dice you got '+random.choice(dice))
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to roll the dice")
 
-        # *********** find location ***********
-        elif 'location' in query:
+        # ! *********** timmer ***********
+        elif 'timer' in query:
             try:
-                find_location()
+                speak("For how many minutes?")
+                mins = int(takeCommandMic())
+                speak("Timer set for " + str(mins) + " minutes")
+                time(mins*60)
+                speak("Time is up")
             except Exception as e:
                 print(e)
-                speak("Sorry, I am not able to find the location")
+                speak("Sorry, I am not able to set the timer")
 
         # *********** Exit ***********
-        elif 'exit' in query:
+        elif quit in query:
             try:
-                quit()
+                speak("Thanks for using me sir, have a good day.")
+                exit()
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to do that")
