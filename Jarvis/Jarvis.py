@@ -1,5 +1,5 @@
-import ctypes # pip install ctypes == to system call
-import pytube # pip install pytube == download youtube video
+import ctypes  # pip install ctypes == to system call
+import pytube  # pip install pytube == download youtube video
 import pyttsx3  # pip install pyttsx3  == text data into speech
 import datetime  # pip install datetime == get date and time
 # pip install speechRecognition == speech data into text
@@ -135,7 +135,8 @@ def sendEmail(To, Subject, content):
 def sendwhatsappmsg(to):
     #! use pywhatkit instead to send the message/images to the grp  refer :https://pypi.org/project/pywhatkit/
 
-    user_name = {'harshit': '+91 63536 59331','pranam': '+91 70415 87406','adu padu': '+91 93257 61961','gayatri kulkarni': '+91 80104 49116'}
+    user_name = {'harshit': '+91 63536 59331', 'pranam': '+91 70415 87406',
+                 'adu padu': '+91 93257 61961', 'gayatri kulkarni': '+91 80104 49116'}
     grp_name = {'me', 'itsa', 'error 202'}
     if to in user_name:
         to = user_name[to]
@@ -160,20 +161,20 @@ def sendwhatsappimg(to, message):
 
         speak("What should i say?")
         message = takeCommandMic()
-        
+
         speak("What is the path of the image?")
         image_path = takeCommandCMD("Enter the path of the image:")
 
         pywhatkit.sendwhats_image(f"{to}", f"{image_path}", f"{message}")
     elif to in grp_name:
         to = grp_name[to]
-        
+
         speak("What should i say?")
         message = takeCommandMic()
 
         speak("What is the path of the image?")
         image_path = takeCommandCMD("Enter the path of the image:")
-        
+
         pywhatkit.sendwhats_to_group(f"{to}", f"{image_path}", f"{message}")
     else:
         speak("I don't have the contact in my database")
@@ -189,11 +190,15 @@ def news():
                                      page_size=5)
 
     newsdata = data['articles']
-    for x, y in enumerate(newsdata):
-        print(f'{x},{y["description"]}')
-        speak(f'{x},{y["description"]}')
+    for index, y in enumerate(newsdata):
+        print(f'{index},{y["description"]}')
+        speak(f'{index},{y["description"]}')
 
     speak("that's all for now ")
+    speak("Do you want to hear more news?") 
+    ans = takeCommandMic()
+    if 'yes' in ans:
+        news() 
 
 
 # *********** Text to speech ***********
@@ -234,7 +239,106 @@ def generate_password():
     speak("Your password is"+password)
     print(password)
 
-# todo: if the below logic work concise all the other things like open google, open youtube etc. into one set
+
+# ********************* Open Application Function ***********************
+def open_application(query):
+    try:
+        # ********** camera **********
+        if "camera" in query:
+            speak("Opening camera")
+            print("Opening camera ...")
+            os.system("start microsoft.windows.camera:")
+        # ********** cmd **********
+        elif ("cmd" in query) or ("cammond prompt" in query):
+            speak("Opening cmd")
+            print("Opening cmd ...")
+            os.system("start cmd")
+        # ********** notepad **********
+        elif "notepad" in query:
+            speak("Opening notepad")
+            print("Opening notepad ...")
+            os.system("start notepad")
+        # ********** paint **********
+        elif "paint" in query:
+            speak("Opening paint")
+            print("Opening paint ...")
+            os.system("start mspaint")
+        # ********** calculator **********
+        elif "calculator" in query:
+            speak("Opening calculator")
+            print("Opening calculator ...")
+            os.system("start calculator")
+        # ********** control panel **********
+        elif "control panel" in query:
+            speak("Opening control panel")
+            print("Opening control panel ...")
+            os.system("start control")
+        # ********** task manager **********
+        elif "task manager" in query:
+            speak("Opening task manager")
+            print("Opening task manager ...")
+            os.system("start taskmgr")
+        # ********** file explorer **********
+        elif "file explorer" in query:
+            speak("Opening file explorer")
+            print("Opening file explorer ...")
+            os.system("start explorer")
+        # ********** one note **********
+        elif "one note" in query:
+            speak("Opening one note")
+            print("Opening one note ...")
+            os.system("start onenote")
+        # ********** power point **********
+        elif "power point" in query:
+            speak("Opening power point")
+            print("Opening power point ...")
+            os.system("start powerpnt")
+        # ********** word **********
+        elif "word" in query:
+            speak("Opening word")
+            print("Opening word ...")
+            os.system("start winword")
+        # ********** excel **********
+        elif "excel" in query:
+            speak("Opening excel")
+            print("Opening excel ...")
+            os.system("start excel")
+        # ********** notion **********
+        elif "notion" in query:
+            speak("Opening notion")
+            print("Opening notion ...")
+            rambox = "C:\\Program Files\\Rambox\\Rambox.exe"
+            os.startfile(rambox)
+        # ********** rambox **********
+        elif "rambox" in query:
+            speak("Opening rambox")
+            print("Opening rambox ...")
+            notion = "C:\Users\\khand\\AppData\\Local\\Programs\\Notion\\Notion.exe"
+            os.startfile(notion)
+        # ********** primevideo **********
+        elif "primevideo" in query:
+            speak("Opening primevideo")
+            print("Opening primevideo ...")
+            primevideo = primevideo = "C:\\Program Files\\WindowsApps\\AmazonVideo.PrimeVideo_1.0.116.0_x64__pwbj9vvecjh7j\\PrimeVideo.exe"
+            os.startfile(primevideo)
+        # ********** telegram **********
+        elif "telegram" in query:
+            speak("Opening telegram")
+            print("Opening telegram ...")
+            telegram = "C:\\Program Files\\WindowsApps\\TelegramMessengerLLP.TelegramDesktop_4.6.3.0_x64__t4vj0pshhgkwm\\Telegram.exe"
+            os.startfile(telegram)
+        # ********** python workspace **********
+        elif "python workspace" in query:
+            speak("Opening python workspace")
+            print("Opening python workspace ...")
+            python_workspace = "C:\\Users\\khand\\OneDrive\\Desktop\\Python-Copy.code-workspace"
+            os.startfile(python_workspace)
+    except Exception as e:
+        print(e)
+        speak("Sorry, I am not able to find that")
+
+# todo: if the below logic work concise all the other things like open google, open youtube etc.
+open = {'open camera', 'open cmd', 'open cammond prompt', 'open notepad', 'open paint', 'open calculator', 'open control panel', 'open control panel', 'open task manager', 'open file explorer','open one note', 'open power point', 'open word', 'open excel', 'open notion','open rambox','open primevideo','open telegram','open python workstation'}
 quit = {'quit', 'exit', 'bye', 'goodbye', 'see you later', 'see you soon', 'see you','good night', 'goodbye jarvis', 'good night jarvis', 'good bye', 'good night sir'}
 
 # / ********************* Main Function ***********************
@@ -277,170 +381,73 @@ if __name__ == "__main__":
 
         # . *********** open camera ***********
         elif 'open camera' in query:
-            try:
-                speak("Opening camera")
-                print("Opening camera ...")
-                os.system("start microsoft.windows.camera:")
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
+            open_application(query)
 
         # . *********** open cmd ***********
         elif 'open cmd' in query:
-            try:
-                speak("Opening cmd")
-                print("Opening cmd ...")
-                os.system("start cmd")
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
+            open_application(query)
 
         # . *********** open notepad ***********
         elif 'open notepad' in query:
-            try:
-                speak("Opening notepad")
-                print("Opening notepad ...")
-                os.system("start notepad")
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
+            open_application(query)
 
         # . *********** open paint ***********
         elif 'open paint' in query:
-            try:
-                speak("Opening paint")
-                print("Opening paint ...")
-                os.system("start mspaint")
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
+            open_application(query)
 
         # . *********** open calculator ***********
         elif 'open calculator' in query:
-            try:
-                speak("Opening calculator")
-                print("Opening calculator ...")
-                os.system("start calc")
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
+            open_application(query)
 
         # . *********** open control panel ***********
         elif 'open control panel' in query:
-            try:
-                speak("Opening control panel")
-                print("Opening control panel ...")
-                os.system("start control")
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
+            open_application(query)
 
         # . *********** open task manager ***********
         elif 'open task manager' in query:
-            try:
-                speak("Opening task manager")
-                print("Opening task manager ...")
-                os.system("start taskmgr")
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
+           open_application(query)
 
         # . *********** open file explorer ***********
         elif 'open file explorer' in query:
-            try:
-                speak("Opening file explorer")
-                print("Opening file explorer ...")
-                os.system("start explorer")
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
+            open_application(query)
 
         # . *********** open onenote ***********
         elif 'open onenote' in query:
-            try:
-                speak("Opening onenote")
-                print("Opening onenote ...")
-                os.system("start onenote")
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
+            open_application(query)
 
         # . *********** open powerpoint ***********
         elif 'open powerpoint' in query:
-            try:
-                speak("Opening powerpoint")
-                print("Opening powerpoint ...")
-                os.system("start powerpnt")
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
+            open_application(query)
 
         # . *********** open word ***********
         elif 'open word' in query:
-            try:
-                speak("Opening word")
-                print("Opening word ...")
-                os.system("start winword")
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
+            open_application(query)
 
         # . *********** open excel ***********
         elif 'open excel' in query:
-            try:
-                speak("Opening excel")
-                print("Opening excel ...")
-                os.system("start excel")
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
+            open_application(query)
 
         # . ************ rambox *************
         elif 'rambox' in query:
-            try:
-                rambox = "C:\\Program Files\\Rambox\\Rambox.exe"
-                os.startfile(rambox)
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to find that")
+            open_application(query)
 
         # . ************ notion *************
         elif 'notion' in query:
-            try:
-                notion = "C:\Users\\khand\\AppData\\Local\\Programs\\Notion\\Notion.exe"
-                os.startfile(notion)
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to find that")
+            open_application(query)
 
         # . ************ Prime video *************
         elif 'prime video' in query:
-            try:
-                primevideo = "C:\\Program Files\\WindowsApps\\AmazonVideo.PrimeVideo_1.0.116.0_x64__pwbj9vvecjh7j\\PrimeVideo.exe"
-                os.startfile(primevideo)
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to find that")
+            open_application(query)
 
         # . ************ Telegram *************
         elif 'telegram' in query:
-            try:
-                telegram = "C:\\Program Files\\WindowsApps\\TelegramMessengerLLP.TelegramDesktop_4.6.3.0_x64__t4vj0pshhgkwm\\Telegram.exe"
-                os.startfile(telegram)
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to find that")
+            open_application(query)
 
         # . *********** Open vs code workspace ***********
         elif 'Python workspace' in query:
-            try:
-                VsCodePath = "C:\\Users\\khand\\OneDrive\\Desktop\\Python-Copy.code-workspace"
-                os.startfile(VsCodePath)
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to find that")
+            open_application(query)
 
-        # *********** Text to speech ********
+        # ~ *********** Text to speech ********
         elif 'read' in query:
             try:
                 text_to_speech()
@@ -448,7 +455,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to find that")
 
-        # *********** Take Screenshot ***********
+        # ~ *********** Take Screenshot ***********
         elif 'screenshot' in query:
             try:
                 speak("Taking screenshot...")
@@ -458,7 +465,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to do that")
 
-        # *********** Battery CPU ***********
+        # ~ *********** Battery CPU ***********
         elif 'battery' in query:
             try:
                 battery = psutil.sensors_battery()
@@ -468,7 +475,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to do that")
 
-        # *********** CPU ***********
+        # ~ *********** CPU ***********
         elif 'cpu' in query:
             try:
                 usage = str(psutil.cpu_percent())
@@ -477,7 +484,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to do that")
 
-        # *********** volume ***********
+        # ~ *********** volume ***********
         elif 'volume' in query:
             if ('volume up' in query) or ('increase volume' in query):
                 try:
@@ -501,7 +508,7 @@ if __name__ == "__main__":
                     print(e)
                     speak("Sorry, I am not able to do that")
 
-        # *********** jarvis volume ***********
+        # ~ *********** jarvis volume ***********
         elif 'your volume' in query:
             try:
                 speak("Sir, please tell me the volume level you want to set for me")
@@ -515,35 +522,18 @@ if __name__ == "__main__":
         # ~ *********** shutdown ***********
         elif 'shutdown' in query:
             try:
-                speak("Shutting down the system")
-                os.system("shutdown /s /t 1")
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
-            
-        # ~ *********** restart ***********
-        elif 'restart' in query:
-            try:
-                speak("Restarting the system")
-                os.system("shutdown /r /t 1")
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to do that")
-        
-        # ~ *********** sleep ***********
-        elif 'sleep' in query:  
-            try:
-                speak("Sleeping the system")
-                os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
+                speak("Shutting down the system in 3 seconds")
+                # shutdown , /s = shutdown, /r = restart, /l = log off, /h = hibernate, / ki jaga - use kar sakte hai
+                os.system("shutdown /s /t 3")   # shutdown , /s = shutdown, /t = time, 3 =after 3 sec system will shutdown
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to do that")
 
-        # ~ *********** lock ***********
-        elif 'lock' in query:
+        # ~ *********** restart ***********
+        elif 'restart' in query:
             try:
-                speak("Locking the system")
-                ctypes.windll.user32.LockWorkStation()
+                speak("Restarting the system in 3 seconds")
+                os.system("shutdown /r /t 1") # restart , /r = restart, /t = time, 3 =after 3 sec system will restart
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to do that")
@@ -552,7 +542,7 @@ if __name__ == "__main__":
         elif 'logout' in query:
             try:
                 speak("Logging out the system")
-                os.system("shutdown -l")
+                os.system("shutdown -l")  # logout , -l = logout 
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to do that")
@@ -561,44 +551,43 @@ if __name__ == "__main__":
         elif 'hibernate' in query:
             try:
                 speak("Hibernating the system")
-                os.system("shutdown /h")
+                os.system("shutdown /h")    # hibernate , /h = hibernate
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to do that")
-        
+
+        # ~ *********** sleep ***********
+        elif 'sleep' in query:
+            try:
+                speak("Sleeping the system")
+                # - sleep , rundless32.exe = run dll, powrprof.dll = power profile, SetSuspendState = set suspend state, 0,1,0 = 0 = sleep, 1 = hibernate, 0 = no force
+                # - The command you provided is used to put the computer into sleep mode. The rundll32.exe program is used to run DLL files as if they were programs. In this case, it’s being used to run the powrprof.dll file, which contains functions related to power management. The SetSuspendState function is used to set the suspend state of the system. The 0,1,0 parameter tells the function to put the system into sleep mode, and not hibernate mode. The 0 parameter tells the function to not force the system to sleep, but to allow the system to decide whether it can sleep or not.
+                os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0") 
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+
+        # ~ *********** lock ***********
+        elif 'lock' in query:
+            try:
+                speak("Locking the system")
+                ctypes.windll.user32.LockWorkStation() # lock , LockWorkStation is a function in user32.dll that locks the workstation
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
+
         # ~ *********** change wallpaper ***********
         elif 'change wallpaper' in query:
             try:
                 speak("Changing wallpaper")
                 speak("What is the path of the wallpaper?")
-                wallpaper_path = takeCommandCMD("Enter the path of the wallpaper:")
-                ctypes.windll.user32.SystemParametersInfoW(20, 0, wallpaper_path, 0)
+                wallpaper_path = takeCommandCMD(
+                    "Enter the path of the wallpaper:")
+                ctypes.windll.user32.SystemParametersInfoW(
+                    20, 0, wallpaper_path, 0)  # change wallpaper , SystemParametersInfoW is a function in user32.dll that changes the system parameters of the system , 20 = SPI_SETDESKWALLPAPER, 0 = the change should be applied immediately , wallpaper_path = path of the wallpaper, 0 = that the change should apply to all users.
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to do that")
-
-        # ! *********** recording ***********
-        elif ("recording" in query) or ("screen recording" in query) or ("voice recording" in query):
-            try:
-                speak("Sir press q key to stop recordings")
-                option = takeCommandMic()
-                Record_Option(option=option)
-                speak("Sir recording is being saved")
-            except:
-                speak("Sir an unexpected error occured couldn't start screen recording")
-
-        # ! *********** track a mobile number ***********
-        elif ("track" in query) or ("track a mobile number" in query):
-            speak("Sir please enter the mobile number with country code")
-            try:
-                location, servise_prover, lat, lng = Phonenumber_location_tracker()
-                speak(f"Sir the mobile number is from {location} and the service provider for the mobile number is {servise_prover}")
-                speak(f"latitude of that mobile nuber is {lat} and longitude of that mobile number is {lng}")
-                print(location, servise_prover)
-                print(f"Latitude : {lat} and Longitude : {lng}")
-                speak("Sir location of the mobile number is saved in Maps")
-            except:
-                speak("Sir an unexpected error occured couldn't track the mobile number")
 
         # *********** internet speed ***********
         elif 'internet speed' in query:
@@ -612,7 +601,7 @@ if __name__ == "__main__":
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to do that")
-        
+
         # *********** ip address ***********
         elif 'ip address' in query:
             try:
@@ -645,17 +634,22 @@ if __name__ == "__main__":
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to do that")
-
-        # ********* search google *********
+        
+        # *********** search google ***********
         elif 'search google' in query:
             try:
-                speak('Whats should i search for?')
-                search = takeCommandMic()
-                webbrowser.open('https://www.google.com/search?q=' + search)
+                speak("What do you want to search on Google?")
+                search_term = takeCommandMic().replace(
+                    "search", "").replace("google", "").strip()
+                search_term = search_term.replace(
+                    "for", "").strip().replace(" ", "+")
+                webbrowser.open(
+                    f'https://www.google.com/search?q={search_term}')
+                speak(f"Here are the results for {search_term} on Google")
             except Exception as e:
                 print(e)
-                speak("Sorry, I am not able to find that")
-
+                speak("Sorry, I am not able to do that")
+        
         # *********** Open Youtube ***********
         elif 'open youtube' in query:
             try:
@@ -665,15 +659,49 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to find that")
 
-        # ************* youtube search ********
+        #  *********** search youtube ***********
         elif 'search youtube' in query:
             try:
-                speak("what should i search on youtube?")
-                topic = takeCommandMic()
-                pywhatkit.playonyt(topic)
+                speak("What do you want to search on YouTube?")
+                search_term = takeCommandMic().replace(
+                    "search", "").replace("YouTube", "").strip()
+                search_term = search_term.replace(
+                    "for", "").strip().replace(" ", "+")
+                webbrowser.open(f'https://www.youtube.com/results?search_query={search_term}')
+                speak(f"Here are the results for {search_term} on YouTube")
             except Exception as e:
                 print(e)
-                speak("Sorry, I am not able to find that")
+                speak("Sorry, I am not able to do that")
+
+        # *********** play music on youtube ***********
+        elif ('play music on youtube' in query) or ('search music on youtube' in query) or ('search youtube' in query):
+            try:
+                speak("What do you want to listen on YouTube?")
+                search_term = takeCommandMic().replace("play", "").replace("music", "").strip()
+                search_term = search_term.replace(
+                    "on", "").strip().replace(" ", "+")
+                webbrowser.open(
+                    f'https://www.youtube.com/results?search_query={search_term}')
+                speak(f"Here are the results for {search_term} on YouTube")
+                speak("Which one do you want to play?")
+                search_result = takeCommandMic().lower()
+                if "first" in search_result:
+                    pyautogui.moveTo(x=416, y=195, duration=2)
+                    pyautogui.click(button='left')
+                    speak("Playing the first result on YouTube")
+                elif "second" in search_result:
+                    pyautogui.moveTo(x=416, y=250, duration=2)
+                    pyautogui.click(button='left')
+                    speak("Playing the second result on YouTube")
+                elif "third" in search_result:
+                    pyautogui.moveTo(x=416, y=320, duration=2)
+                    pyautogui.click(button='left')
+                    speak("Playing the third result on YouTube")
+                else:
+                    speak("Sorry, I am not able to do that")
+            except Exception as e:
+                print(e)
+                speak("Sorry, I am not able to do that")
 
         # ! *********** youtube download ***********
         elif 'download youtube' in query:
@@ -681,7 +709,8 @@ if __name__ == "__main__":
                 speak("Sir please enter the link of the video")
                 link = takeCommandCMD("Enter the link of the video:")
                 speak("Sir please enter the path where you want to save the video")
-                path = takeCommandCMD("Enter the path where you want to save the video:")
+                path = takeCommandCMD(
+                    "Enter the path where you want to save the video:")
                 speak("Sir please enter the name of the video")
                 name = takeCommandCMD("Enter the name of the video:")
                 speak("Downloading the video")
@@ -727,7 +756,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to do that")
 
-        # ! *********** Open Classroom ***********
+        # *********** Open Classroom ***********
         elif 'Classroom' in query:
             try:
                 speak("Opening Classroom")
@@ -856,18 +885,6 @@ if __name__ == "__main__":
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to roll the dice")
-
-        # ! *********** timmer ***********
-        elif 'timer' in query:
-            try:
-                speak("For how many minutes?")
-                mins = int(takeCommandMic())
-                speak("Timer set for " + str(mins) + " minutes")
-                time(mins*60)
-                speak("Time is up")
-            except Exception as e:
-                print(e)
-                speak("Sorry, I am not able to set the timer")
 
         # *********** Exit ***********
         elif quit in query:
