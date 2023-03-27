@@ -626,7 +626,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to find that")
 
-        # *********** Open Google ***********
+        # / *********** Open Google ***********
         elif 'open google' in query:
             try:
                 speak("Opening Google...")
@@ -635,7 +635,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to do that")
         
-        # *********** search google ***********
+        # / *********** search google ***********
         elif 'search google' in query:
             try:
                 speak("What do you want to search on Google?")
@@ -650,7 +650,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to do that")
         
-        # *********** Open Youtube ***********
+        # ~ *********** Open Youtube ***********
         elif 'open youtube' in query:
             try:
                 speak("Opening Youtube...")
@@ -659,7 +659,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to find that")
 
-        #  *********** search youtube ***********
+        # ~ *********** search youtube ***********
         elif 'search youtube' in query:
             try:
                 speak("What do you want to search on YouTube?")
@@ -673,7 +673,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to do that")
 
-        # *********** play music on youtube ***********
+        # ~ *********** play music on youtube ***********
         elif ('play music on youtube' in query) or ('search music on youtube' in query) or ('search youtube' in query):
             try:
                 speak("What do you want to listen on YouTube?")
@@ -703,7 +703,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to do that")
 
-        # ! *********** youtube download ***********
+        # ! . *********** youtube download ***********
         elif 'download youtube' in query:
             try:
                 speak("Sir please enter the link of the video")
@@ -720,7 +720,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to find that")
 
-        # *********** Open Stackoverflow ***********
+        # . *********** Open Stackoverflow ***********
         elif 'open stackoverflow' in query:
             try:
                 speak("Opening Stackoverflow...")
@@ -729,7 +729,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to find that")
 
-        # *********** Open Github ***********
+        # . *********** Open Github ***********
         elif 'open github' in query:
             try:
                 speak("Opening Github...")
@@ -738,7 +738,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to find that")
 
-        # *********** Open Facebook ***********
+        # . *********** Open Facebook ***********
         elif 'open facebook' in query:
             try:
                 speak("Opening Facebook...")
@@ -747,7 +747,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to find that")
 
-        # *********** Open Instagram ***********
+        # . *********** Open Instagram ***********
         elif 'open instagram' in query:
             try:
                 speak("Opening Instagram")
@@ -756,7 +756,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to do that")
 
-        # *********** Open Classroom ***********
+        # . *********** Open Classroom ***********
         elif 'Classroom' in query:
             try:
                 speak("Opening Classroom")
@@ -765,7 +765,7 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to do that")
 
-        # *********** Open Gmail ***********
+        # . *********** Open Gmail ***********
         elif 'open gmail' in query:
             try:
                 speak("Opening Gmail...")
