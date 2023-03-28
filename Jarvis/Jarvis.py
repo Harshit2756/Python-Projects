@@ -152,6 +152,8 @@ def sendwhatsappmsg(to):
         speak("I don't have the contact in my database")
 
 # ********************* Send Whatsapp Image Function ***********************
+
+
 def sendwhatsappimg(to, message):
     user_name = {'harshit': '+91 63536 59331', 'pranam': '+91 70415 87406',
                  'adu padu': '+91 93257 61961', 'gayatri kulkarni': '+91 80104 49116'}
@@ -195,10 +197,10 @@ def news():
         speak(f'{index},{y["description"]}')
 
     speak("that's all for now ")
-    speak("Do you want to hear more news?") 
+    speak("Do you want to hear more news?")
     ans = takeCommandMic()
     if 'yes' in ans:
-        news() 
+        news()
 
 
 # *********** Text to speech ***********
@@ -307,39 +309,43 @@ def open_application(query):
         elif "notion" in query:
             speak("Opening notion")
             print("Opening notion ...")
-            rambox = "C:\\Program Files\\Rambox\\Rambox.exe"
-            os.startfile(rambox)
+            notion = 'C:\\Users\\khand\\AppData\\Local\\Programs\\Notion\\Notion.exe'
+            os.startfile(notion)
         # ********** rambox **********
         elif "rambox" in query:
             speak("Opening rambox")
             print("Opening rambox ...")
-            notion = "C:\Users\\khand\\AppData\\Local\\Programs\\Notion\\Notion.exe"
-            os.startfile(notion)
+            rambox = 'C:\\Program Files\\Rambox\\Rambox.exe'
+            os.startfile(rambox)
         # ********** primevideo **********
         elif "primevideo" in query:
             speak("Opening primevideo")
             print("Opening primevideo ...")
-            primevideo = primevideo = "C:\\Program Files\\WindowsApps\\AmazonVideo.PrimeVideo_1.0.116.0_x64__pwbj9vvecjh7j\\PrimeVideo.exe"
+            primevideo = primevideo = 'C:\\Program Files\\WindowsApps\\AmazonVideo.PrimeVideo_1.0.116.0_x64__pwbj9vvecjh7j\\PrimeVideo.exe'
             os.startfile(primevideo)
         # ********** telegram **********
         elif "telegram" in query:
             speak("Opening telegram")
             print("Opening telegram ...")
-            telegram = "C:\\Program Files\\WindowsApps\\TelegramMessengerLLP.TelegramDesktop_4.6.3.0_x64__t4vj0pshhgkwm\\Telegram.exe"
+            telegram = 'C:\\Program Files\\WindowsApps\\TelegramMessengerLLP.TelegramDesktop_4.6.3.0_x64__t4vj0pshhgkwm\\Telegram.exe'
             os.startfile(telegram)
         # ********** python workspace **********
         elif "python workspace" in query:
             speak("Opening python workspace")
             print("Opening python workspace ...")
-            python_workspace = "C:\\Users\\khand\\OneDrive\\Desktop\\Python-Copy.code-workspace"
+            python_workspace = 'C:\\Users\\khand\\OneDrive\\Desktop\\Python-Copy.code-workspace'
             os.startfile(python_workspace)
     except Exception as e:
         print(e)
         speak("Sorry, I am not able to find that")
 
+
 # todo: if the below logic work concise all the other things like open google, open youtube etc.
-open = {'open camera', 'open cmd', 'open cammond prompt', 'open notepad', 'open paint', 'open calculator', 'open control panel', 'open control panel', 'open task manager', 'open file explorer','open one note', 'open power point', 'open word', 'open excel', 'open notion','open rambox','open primevideo','open telegram','open python workstation'}
-quit = {'quit', 'exit', 'bye', 'goodbye', 'see you later', 'see you soon', 'see you','good night', 'goodbye jarvis', 'good night jarvis', 'good bye', 'good night sir'}
+open = {'open camera', 'open cmd', 'open cammond prompt', 'open notepad', 'open paint', 'open calculator', 'open control panel', 'open control panel', 'open task manager',
+        'open file explorer', 'open one note', 'open power point', 'open word', 'open excel', 'open notion', 'open rambox', 'open primevideo', 'open telegram', 'open python workstation'}
+
+quit = {'quit', 'exit', 'bye', 'goodbye', 'see you later', 'see you soon', 'see you',
+        'good night', 'goodbye jarvis', 'good night jarvis', 'good bye', 'good night sir'}
 
 # / ********************* Main Function ***********************
 if __name__ == "__main__":
@@ -350,8 +356,8 @@ if __name__ == "__main__":
 
         # convert query into lower case so we don't get error in if condition when we say "Open Youtube" instead of "open youtube" or "OPEN YOUTUBE" etc.
 
+        query = takeCommandMic().lower()
         print(query)
-        query = query.lower()
 
         # ******* time ***********
         if 'time' in query:
@@ -405,7 +411,7 @@ if __name__ == "__main__":
 
         # . *********** open task manager ***********
         elif 'open task manager' in query:
-           open_application(query)
+            open_application(query)
 
         # . *********** open file explorer ***********
         elif 'open file explorer' in query:
@@ -524,7 +530,8 @@ if __name__ == "__main__":
             try:
                 speak("Shutting down the system in 3 seconds")
                 # shutdown , /s = shutdown, /r = restart, /l = log off, /h = hibernate, / ki jaga - use kar sakte hai
-                os.system("shutdown /s /t 3")   # shutdown , /s = shutdown, /t = time, 3 =after 3 sec system will shutdown
+                # shutdown , /s = shutdown, /t = time, 3 =after 3 sec system will shutdown
+                os.system("shutdown /s /t 3")
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to do that")
@@ -533,7 +540,8 @@ if __name__ == "__main__":
         elif 'restart' in query:
             try:
                 speak("Restarting the system in 3 seconds")
-                os.system("shutdown /r /t 1") # restart , /r = restart, /t = time, 3 =after 3 sec system will restart
+                # restart , /r = restart, /t = time, 3 =after 3 sec system will restart
+                os.system("shutdown /r /t 1")
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to do that")
@@ -542,7 +550,7 @@ if __name__ == "__main__":
         elif 'logout' in query:
             try:
                 speak("Logging out the system")
-                os.system("shutdown -l")  # logout , -l = logout 
+                os.system("shutdown -l")  # logout , -l = logout
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to do that")
@@ -562,7 +570,7 @@ if __name__ == "__main__":
                 speak("Sleeping the system")
                 # - sleep , rundless32.exe = run dll, powrprof.dll = power profile, SetSuspendState = set suspend state, 0,1,0 = 0 = sleep, 1 = hibernate, 0 = no force
                 # - The command you provided is used to put the computer into sleep mode. The rundll32.exe program is used to run DLL files as if they were programs. In this case, it’s being used to run the powrprof.dll file, which contains functions related to power management. The SetSuspendState function is used to set the suspend state of the system. The 0,1,0 parameter tells the function to put the system into sleep mode, and not hibernate mode. The 0 parameter tells the function to not force the system to sleep, but to allow the system to decide whether it can sleep or not.
-                os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0") 
+                os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to do that")
@@ -571,7 +579,8 @@ if __name__ == "__main__":
         elif 'lock' in query:
             try:
                 speak("Locking the system")
-                ctypes.windll.user32.LockWorkStation() # lock , LockWorkStation is a function in user32.dll that locks the workstation
+                # lock , LockWorkStation is a function in user32.dll that locks the workstation
+                ctypes.windll.user32.LockWorkStation()
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to do that")
@@ -634,7 +643,7 @@ if __name__ == "__main__":
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to do that")
-        
+
         # / *********** search google ***********
         elif 'search google' in query:
             try:
@@ -649,7 +658,7 @@ if __name__ == "__main__":
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to do that")
-        
+
         # ~ *********** Open Youtube ***********
         elif 'open youtube' in query:
             try:
@@ -667,7 +676,8 @@ if __name__ == "__main__":
                     "search", "").replace("YouTube", "").strip()
                 search_term = search_term.replace(
                     "for", "").strip().replace(" ", "+")
-                webbrowser.open(f'https://www.youtube.com/results?search_query={search_term}')
+                webbrowser.open(
+                    f'https://www.youtube.com/results?search_query={search_term}')
                 speak(f"Here are the results for {search_term} on YouTube")
             except Exception as e:
                 print(e)
