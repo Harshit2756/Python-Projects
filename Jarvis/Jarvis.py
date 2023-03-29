@@ -184,24 +184,40 @@ def sendwhatsappimg(to, message):
 
 # ***************** News update ****************
 def news():
-    newsapi = NewsApiClient(api_key='5f5422d5735d45d2a17b21db6ed5859a')
-    speak('what topic you need the news on?')
-    topic = takeCommandMic()
-    data = newsapi.get_top_headlines(q='topic',
-                                     language='en',
-                                     page_size=5)
+    MAIN_URL_ = "https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=5f5422d5735d45d2a17b21db6ed5859a"
+    MAIN_PAGE_ = get(MAIN_URL_).json()
+    articles = MAIN_PAGE_["articles"]
+    headings = []
+    seq = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth',
+          'ninth', 'tenth']  # If you need more than ten you can extend it in the list
+    for ar in articles:
+        headings.append(ar['title'])
+    for i in range(len(seq)):
+        print(f"todays {seq[i]} news is: {headings[i]}")
+        speak(f"todays {seq[i]} news is: {headings[i]}")
+    speak("Boss I am done, I have read most of the latest news")
 
-    newsdata = data['articles']
-    for index, y in enumerate(newsdata):
-        print(f'{index},{y["description"]}')
-        speak(f'{index},{y["description"]}')
+    # speak("Do you want news on specific topic?")
+    # ans = takeCommandMic().lower()
+    # if 'yes' in ans:
+    #     newsapi = NewsApiClient(api_key='5f5422d5735d45d2a17b21db6ed5859a')
+    #     speak('what\'s topic you need the news on?')
+    #     topic = takeCommandMic()
+    #     data = newsapi.get_top_headlines(q=topic,
+    #                                     language='en',
+    #                                     page_size=5)
+    #     newsdata = data['articles']
+    #     for index, y in enumerate(newsdata):
+    #         print(f'{index},{y["description"]}')
+    #         speak(f'{index},{y["description"]}')
 
     speak("that's all for now ")
     speak("Do you want to hear more news?")
-    ans = takeCommandMic()
+    ans = takeCommandMic().lower()
     if 'yes' in ans:
         news()
-
+    else:
+        speak("Ok Boss, I will be here if you need me")
 
 # *********** Text to speech ***********
 def text_to_speech():
