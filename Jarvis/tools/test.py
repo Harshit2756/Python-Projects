@@ -73,6 +73,19 @@ def play_game():
                 print(e)
                 speak("Sorry, I am not able to find that")
 
+    # speak("Do you want news on specific topic?")
+    # ans = takeCommandMic().lower()
+    # if 'yes' in ans:
+    #     newsapi = NewsApiClient(api_key='5f5422d5735d45d2a17b21db6ed5859a')
+    #     speak('what\'s topic you need the news on?')
+    #     topic = takeCommandMic()
+    #     data = newsapi.get_top_headlines(q=topic,
+    #                                     language='en',
+    #                                     page_size=5)
+    #     newsdata = data['articles']
+    #     for index, y in enumerate(newsdata):
+    #         print(f'{index},{y["description"]}')
+    #         speak(f'{index},{y["description"]}')
 
 
 """

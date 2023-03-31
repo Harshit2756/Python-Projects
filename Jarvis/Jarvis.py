@@ -1,5 +1,5 @@
 import ctypes  # pip install ctypes == to system call
-import pytube  # pip install pytube == download youtube video
+from pytube import YouTube   # pip install pytube == download youtube video
 import pyttsx3  # pip install pyttsx3  == text data into speech
 import datetime  # pip install datetime == get date and time
 # pip install speechRecognition == speech data into text
@@ -189,27 +189,13 @@ def news():
     articles = MAIN_PAGE_["articles"]
     headings = []
     seq = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth',
-          'ninth', 'tenth']  # If you need more than ten you can extend it in the list
+        'ninth', 'tenth']  # If you need more than ten you can extend it in the list
     for ar in articles:
         headings.append(ar['title'])
     for i in range(len(seq)):
         print(f"todays {seq[i]} news is: {headings[i]}")
         speak(f"todays {seq[i]} news is: {headings[i]}")
     speak("Boss I am done, I have read most of the latest news")
-
-    # speak("Do you want news on specific topic?")
-    # ans = takeCommandMic().lower()
-    # if 'yes' in ans:
-    #     newsapi = NewsApiClient(api_key='5f5422d5735d45d2a17b21db6ed5859a')
-    #     speak('what\'s topic you need the news on?')
-    #     topic = takeCommandMic()
-    #     data = newsapi.get_top_headlines(q=topic,
-    #                                     language='en',
-    #                                     page_size=5)
-    #     newsdata = data['articles']
-    #     for index, y in enumerate(newsdata):
-    #         print(f'{index},{y["description"]}')
-    #         speak(f'{index},{y["description"]}')
 
     speak("that's all for now ")
     speak("Do you want to hear more news?")
@@ -220,6 +206,8 @@ def news():
         speak("Ok Boss, I will be here if you need me")
 
 # *********** Text to speech ***********
+
+
 def text_to_speech():
     text = clipboard.paste()
     speak(text)
@@ -729,19 +717,18 @@ if __name__ == "__main__":
                 print(e)
                 speak("Sorry, I am not able to do that")
 
-        # ! . *********** youtube download ***********
+        # . *********** youtube download ***********
         elif 'download youtube' in query:
             try:
                 speak("Sir please enter the link of the video")
                 link = takeCommandCMD("Enter the link of the video:")
-                speak("Sir please enter the path where you want to save the video")
-                path = takeCommandCMD(
-                    "Enter the path where you want to save the video:")
-                speak("Sir please enter the name of the video")
-                name = takeCommandCMD("Enter the name of the video:")
+                youtube_video = YouTube(link)
+                SAVE_PATH = 'D:\\Downloads'
+        
                 speak("Downloading the video")
-                pytube.YouTube(link).streams.first().download(path, name)
+                youtube_video.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download(SAVE_PATH)
                 speak("Video downloaded")
+                os.open(SAVE_PATH)
             except Exception as e:
                 print(e)
                 speak("Sorry, I am not able to find that")
@@ -913,7 +900,7 @@ if __name__ == "__main__":
                 speak("Sorry, I am not able to roll the dice")
 
         # *********** Exit ***********
-        elif quit in query:
+        elif query in quit:
             try:
                 speak("Thanks for using me sir, have a good day.")
                 exit()
