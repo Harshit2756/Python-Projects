@@ -1,3 +1,25 @@
+# Time
+# Wish me
+# Date
+# Send Email Function
+# Sends Whatsapp Message to grps and chat with image.
+# Latest News
+# Text to speech
+# Windows basic functions
+# Take screenshot,
+# Open Apps(Telegram, Primevideo Notion, Excel, Ppt, Word, Onenote, File explorer, Task manager, Control panel, Settings, Camera, Calculator, Notepad, Cmd, Paint, etc.)
+# Basic Features such as Batery, CPU usage, Volume control, change wallpaper.
+# shutdown, restart, logout, sleep, hibernate, lock.
+# internet speed, ip add.
+# Wikipedia search, Google search, Youtube Search(can paly any of the 1st three video in search), Download yt video, open general websites(yt, github, stackoverflow, facebook, insta, gmail, etc)
+# finds the location of the phone no.
+# play music from directory
+# password generator
+# jokes
+# flip a coin
+# roll a dice
+
+
 import ctypes  # pip install ctypes == to system call
 from pytube import YouTube   # pip install pytube == download youtube video
 import pyttsx3  # pip install pyttsx3  == text data into speech
