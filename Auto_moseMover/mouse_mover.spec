@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['yt_final.py'],
+    ['mouse_mover.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='yt_final',
+    name='mouse_mover',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
